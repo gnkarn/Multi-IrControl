@@ -27,6 +27,7 @@ If you want to compile Sonoff-Tasmota yourself keep in mind the following:
 - Sonoff-Tasmota provides all (Sonoff) modules in one file and starts with module Sonoff Basic.
 - Once uploaded select module using the configuration webpage or the commands ```Modules``` and ```Module```.
 - After reboot select config menu again or use commands ```GPIOs``` and ```GPIO``` to change GPIO with desired sensor.
+- GNK multi-IrControlmodified version to act as a multi-remote ir with Home assistant .
 
 <img src="https://github.com/arendst/arendst.github.io/blob/master/media/sonoffbasic.jpg" width="250" align="right" />
 

@@ -323,6 +323,8 @@ boolean IrSendCommand()
               irsend->sendSAMSUNG(data, (bits > SAMSUNG_BITS) ? SAMSUNG_BITS : bits); break;
             case PANASONIC:
               irsend->sendPanasonic(bits, data); break;
+            case GICABLE:
+                irsend->sendGICable(data, nbits); break;
             default:
               snprintf_P(mqtt_data, sizeof(mqtt_data), PSTR("{\"" D_CMND_IRSEND "\":\"" D_JSON_PROTOCOL_NOT_SUPPORTED "\"}"));
           }

@@ -32,7 +32,7 @@ Then in `src/main.c` you should use:
 #include <Foo.h>
 #include <Bar.h>
 
-// rest H/C/CPP code
+// rest H/C/CPP code - develop
 
 PlatformIO will find your libraries automatically, configure preprocessor's
 include paths and build them.

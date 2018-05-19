@@ -320,7 +320,7 @@ boolean IrSendCommand()
             case JVC:
               irsend->sendJVC(data, (bits > JVC_BITS) ? JVC_BITS : bits, 1); break;
             case SAMSUNG:
-              irsend->sendSAMSUNG(data, (bits > SAMSUNG_BITS) ? SAMSUNG_BITS : bits); break;
+              irsend->sendSAMSUNG(data, (bits > SAMSUNG_BITS) ? SAMSUNG_BITS : bits ); break;
             case PANASONIC:
               irsend->sendPanasonic(bits, data); break;
             case GICABLE:

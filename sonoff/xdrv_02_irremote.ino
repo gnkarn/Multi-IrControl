@@ -26,7 +26,7 @@
 
 // Based on IRremoteESP8266.h enum decode_type_t
 const char kIrRemoteProtocols[] PROGMEM =
-  "UNKNOWN|RC5|RC6|NEC|SONY|PANASONIC|JVC|SAMSUNG|WHYNTER|AIWA_RC_T501|LG|SANYO|MITSUBISHI|DISH|SHARP";
+  "UNUSED|RC5|RC6|NEC|SONY|PANASONIC|JVC|SAMSUNG|WHYNTER|AIWA_RC_T501|LG|SANYO|MITSUBISHI|DISH|SHARP|COOLIX|DAIKIN|DENON|KELVINATOR|SHERWOOD|MITSUBISHI_AC|RCMM|SANYO_LC7461|RC5X|GREE|PRONTO|NEC_LIKE|ARGO|TROTEC|NIKAI|RAW|GLOBALCACHE|TOSHIBA_AC|FUJITSU_AC|MIDEA|MAGIQUEST|LASERTAG|CARRIER_AC|HAIER_AC|MITSUBISHI2|HITACHI_AC|GICABLE";
 
 #ifdef USE_IR_HVAC
 
@@ -320,9 +320,11 @@ boolean IrSendCommand()
             case JVC:
               irsend->sendJVC(data, (bits > JVC_BITS) ? JVC_BITS : bits, 1); break;
             case SAMSUNG:
-              irsend->sendSAMSUNG(data, (bits > SAMSUNG_BITS) ? SAMSUNG_BITS : bits); break;
+              irsend->sendSAMSUNG(data, (bits > SAMSUNG_BITS) ? SAMSUNG_BITS : bits ); break;
             case PANASONIC:
               irsend->sendPanasonic(bits, data); break;
+            case GICABLE:
+                irsend->sendGICable(data, bits); break;
             default:
               snprintf_P(mqtt_data, sizeof(mqtt_data), PSTR("{\"" D_CMND_IRSEND "\":\"" D_JSON_PROTOCOL_NOT_SUPPORTED "\"}"));
           }

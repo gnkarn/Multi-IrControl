@@ -169,6 +169,8 @@
 #define DECODE_GICABLE       true
 #define SEND_GICABLE         true
 
+#define SEND_BLUESKY         true
+
 #if (DECODE_ARGO || DECODE_DAIKIN || DECODE_FUJITSU_AC || DECODE_GREE || \
      DECODE_KELVINATOR || DECODE_MITSUBISHI_AC || DECODE_TOSHIBA_AC || \
      DECODE_TROTEC || DECODE_HAIER_AC || DECODE_HITACHI_AC)
@@ -204,7 +206,7 @@ enum decode_type_t {
   DENON,
   KELVINATOR,
   SHERWOOD,
-  MITSUBISHI_AC,
+  MITSUBISHI_AC, //20
   RCMM,
   SANYO_LC7461,
   RC5X,
@@ -225,7 +227,8 @@ enum decode_type_t {
   HAIER_AC,
   MITSUBISHI2,
   HITACHI_AC,
-  GICABLE
+  GICABLE,
+  BLUESKY // 42
 };
 
 // Message lengths & required repeat values

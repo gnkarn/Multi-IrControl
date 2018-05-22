@@ -251,6 +251,10 @@ void send(uint16_t type, uint64_t data, uint16_t nbits);
                    uint16_t repeat = GICABLE_MIN_REPEAT);
 #endif
 
+#if SEND_BLUESKY
+  void send_bluesky(uint8_t data[], uint16_t nbytes, uint16_t repeat);
+#endif
+
  protected:
 #ifdef UNIT_TEST
 #ifndef HIGH

@@ -1,4 +1,5 @@
 // Copyright 2018 David Conran
+// & gustavo karnincic .
 
 #include "IRrecv.h"
 #include "IRsend.h"

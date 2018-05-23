@@ -527,6 +527,15 @@ void IRsend::send(uint16_t type, uint64_t data, uint16_t nbits) {
 #if SEND_GICABLE
     case GICABLE: sendGICable(data, nbits); break;
 #endif
+
   }
+}
+
+void IRsend::send(uint16_t type,uint8_t data[], uint16_t nbytes) {
+  #if SEND_BLUESKY
+  if (type == BLUESKY ){
+     BLUESKY: send_bluesky(data, nbytes);
+   }
+  #endif
 }
 #endif

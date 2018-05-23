@@ -26,7 +26,7 @@
 
 // Based on IRremoteESP8266.h enum decode_type_t
 const char kIrRemoteProtocols[] PROGMEM =
-  "UNUSED|RC5|RC6|NEC|SONY|PANASONIC|JVC|SAMSUNG|WHYNTER|AIWA_RC_T501|LG|SANYO|MITSUBISHI|DISH|SHARP|COOLIX|DAIKIN|DENON|KELVINATOR|SHERWOOD|MITSUBISHI_AC|RCMM|SANYO_LC7461|RC5X|GREE|PRONTO|NEC_LIKE|ARGO|TROTEC|NIKAI|RAW|GLOBALCACHE|TOSHIBA_AC|FUJITSU_AC|MIDEA|MAGIQUEST|LASERTAG|CARRIER_AC|HAIER_AC|MITSUBISHI2|HITACHI_AC|GICABLE";
+  "UNUSED|RC5|RC6|NEC|SONY|PANASONIC|JVC|SAMSUNG|WHYNTER|AIWA_RC_T501|LG|SANYO|MITSUBISHI|DISH|SHARP|COOLIX|DAIKIN|DENON|KELVINATOR|SHERWOOD|MITSUBISHI_AC|RCMM|SANYO_LC7461|RC5X|GREE|PRONTO|NEC_LIKE|ARGO|TROTEC|NIKAI|RAW|GLOBALCACHE|TOSHIBA_AC|FUJITSU_AC|MIDEA|MAGIQUEST|LASERTAG|CARRIER_AC|HAIER_AC|MITSUBISHI2|HITACHI_AC|GICABLE|BLUESKY";
 
 #ifdef USE_IR_HVAC
 
@@ -283,7 +283,7 @@ boolean IrSendCommand()
   const char *protocol;
   uint32_t bits = 0;
   uint32_t data = 0;
-
+  uint8_t *array_data[14];                                                       // for bluesky 112 bits , 14 bytes
   for (uint16_t i = 0; i <= sizeof(dataBufUc); i++) {
     dataBufUc[i] = toupper(XdrvMailbox.data[i]);
   }
@@ -325,6 +325,8 @@ boolean IrSendCommand()
               irsend->sendPanasonic(bits, data); break;
             case GICABLE:
                 irsend->sendGICable(data, bits); break;
+            case BLUESKY:
+                    irsend->send_bluesky(  *array_data, bits); break;
             default:
               snprintf_P(mqtt_data, sizeof(mqtt_data), PSTR("{\"" D_CMND_IRSEND "\":\"" D_JSON_PROTOCOL_NOT_SUPPORTED "\"}"));
           }

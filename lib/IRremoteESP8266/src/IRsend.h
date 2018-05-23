@@ -64,6 +64,7 @@ class IRsend {
                    const uint16_t frequency, const bool MSBfirst,
                    const uint16_t repeat, const uint8_t dutycycle);
 void send(uint16_t type, uint64_t data, uint16_t nbits);
+void send(uint16_t type, uint8_t data[], uint16_t nbits); //                    for bluesky
 #if (SEND_NEC || SEND_SHERWOOD || SEND_AIWA_RC_T501 || SEND_SANYO)
   void sendNEC(uint64_t data, uint16_t nbits = NEC_BITS, uint16_t repeat = 0);
   uint32_t encodeNEC(uint16_t address, uint16_t command);
@@ -252,7 +253,8 @@ void send(uint16_t type, uint64_t data, uint16_t nbits);
 #endif
 
 #if SEND_BLUESKY
-  void send_bluesky(uint8_t data[], uint16_t nbytes, uint16_t repeat);
+  void send_bluesky(uint8_t data[], uint16_t nbytes);
+
 #endif
 
  protected:

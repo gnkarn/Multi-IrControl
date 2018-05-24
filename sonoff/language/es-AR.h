@@ -28,9 +28,14 @@
  * Use online command StateText to translate ON, OFF, HOLD and TOGGLE.
  * Use online command Prefix to translate cmnd, stat and tele.
  *
+ * Updated until v5.14.0a
 \*********************************************************************/
 
 #define LANGUAGE_MODULE_NAME         // Enable to display "Module Generic" (ie Spanish), Disable to display "Generic Module" (ie English)
+
+#define LANGUAGE_LCID 11274
+// HTML (ISO 639-1) Language Code
+#define D_HTML_LANGUAGE "es"
 
 // "2017-03-07T11:08:02" - ISO8601:2004
 #define D_YEAR_MONTH_SEPARATOR "-"
@@ -71,9 +76,11 @@
 #define D_DARKLIGHT "Oscura"
 #define D_DEBUG "Debug"
 #define D_DISABLED "Deshabilitado"
+#define D_DISTANCE "Distancia"
 #define D_DNS_SERVER "DNS Server"
 #define D_DONE "Listo"
 #define D_DST_TIME "DST"
+#define D_ECO2 "eCO2"
 #define D_EMULATION "Emulación"
 #define D_ENABLED "Habilitado"
 #define D_ERASE "Borrar"
@@ -85,6 +92,7 @@
 #define D_FALSE "Falso"
 #define D_FILE "Archivo"
 #define D_FREE_MEMORY "Memoria Libre"
+#define D_FREQUENCY "Frecuencia"
 #define D_GAS "Gas"
 #define D_GATEWAY "Gateway"
 #define D_GROUP "Grupo"
@@ -95,6 +103,7 @@
 #define D_IMMEDIATE "inmediato"      // Button immediate
 #define D_INDEX "Índice"
 #define D_INFO "Información"
+#define D_INFRARED "Infrarrojo"
 #define D_INITIALIZED "Inicializado"
 #define D_IP_ADDRESS "Dirección IP"
 #define D_LIGHT "Luz"
@@ -113,6 +122,9 @@
 #define D_PORT "Puerto"
 #define D_POWER_FACTOR "Factor de Potencia"
 #define D_POWERUSAGE "Potencia"
+#define D_POWERUSAGE_ACTIVE "Potencia Activa"
+#define D_POWERUSAGE_APPARENT "Potencia Aparente"
+#define D_POWERUSAGE_REACTIVE "Potencia Reactiva"
 #define D_PRESSURE "Presión"
 #define D_PRESSUREATSEALEVEL "Presión al nivel del mar"
 #define D_PROGRAM_FLASH_SIZE "Tamaño de Flash de Programa"
@@ -124,6 +136,7 @@
 #define D_RESTART_REASON "Causa Reinicio"
 #define D_RESTORE "Restauración"
 #define D_RETAINED "Grabado"
+#define D_RULE "Regla"
 #define D_SAVE "Grabar"
 #define D_SENSOR "Sensor"
 #define D_SSID "SSId"
@@ -133,17 +146,21 @@
 #define D_SUBNET_MASK "Máscara Subred"
 #define D_SUBSCRIBE_TO "Suscribir a"
 #define D_SUCCESSFUL "Exitosa"
+#define D_SUNRISE "Salida del Sol"
+#define D_SUNSET "Puesta del Sol"
 #define D_TEMPERATURE "Temperatura"
 #define D_TO "a"
 #define D_TOGGLE "Conmutar"
 #define D_TOPIC "Topic"
 #define D_TRANSMIT "Transmitir"
 #define D_TRUE "Verdadero"
+#define D_TVOC "TVOC"
 #define D_UPGRADE "Actualización"
 #define D_UPLOAD "Carga"
 #define D_UPTIME "Tiempo Encendido"
 #define D_USER "Usuario"
 #define D_UTC_TIME "UTC"
+#define D_UV_INDEX "Índice UV"
 #define D_UV_LEVEL "Nivel UV"
 #define D_VERSION "Versión"
 #define D_VOLTAGE "Tensión"
@@ -161,13 +178,6 @@
 #define D_RECEIVED_TOPIC "Topic Recibido"
 #define D_DATA_SIZE "Tamaño de Datos"
 #define D_ANALOG_INPUT "Entrada Analógica"
-
-#define D_FINGERPRINT "Verificar TLS fingerprint..."
-#define D_TLS_CONNECT_FAILED_TO "Falló Conección TLS a"
-#define D_RETRY_IN "Reintentando"
-#define D_VERIFIED "Verificado"
-#define D_INSECURE "Conección insegura por Fingerprint no válido"
-#define D_CONNECT_FAILED_TO "Falló Conección a"
 
 // support.ino
 #define D_OSWATCH "osWatch"
@@ -196,7 +206,7 @@
 #define D_ERASED_SECTOR "Sector borrado"
 
 // webserver.ino
-#define D_MINIMAL_FIRMWARE_PLEASE_UPGRADE "firmware MÍNIMO - actualice por favor"
+#define D_MINIMAL_FIRMWARE_PLEASE_UPGRADE "Firmware MÍNIMO - actualice por favor"
 #define D_WEBSERVER_ACTIVE_ON "Servidor web activo en"
 #define D_WITH_IP_ADDRESS "con dirección IP"
 #define D_WEBSERVER_STOPPED "Servidor web detenido"
@@ -317,6 +327,14 @@
 #define D_ENABLE_WEBLOG_FOR_RESPONSE "Habilitar weblog 2 si desea respuesta"
 #define D_NEED_USER_AND_PASSWORD "Se necesita user=<username>&password=<password>"
 
+// xdrv_00_mqtt.ino
+#define D_FINGERPRINT "Verificar TLS fingerprint..."
+#define D_TLS_CONNECT_FAILED_TO "Falló Conección TLS a"
+#define D_RETRY_IN "Reintentando"
+#define D_VERIFIED "Verificado Fingerprint"
+#define D_INSECURE "Conección insegura por Fingerprint no válido"
+#define D_CONNECT_FAILED_TO "Falló Conección a"
+
 // xdrv_wemohue.ino
 #define D_MULTICAST_DISABLED "Multicast deshabilitado"
 #define D_MULTICAST_REJOINED "Multicast (re)conectado"
@@ -348,11 +366,42 @@
   #define D_DOMOTICZ_TEMP_HUM_BARO "Temp,Hum,Baro"
   #define D_DOMOTICZ_POWER_ENERGY "Potencia,Energía"
   #define D_DOMOTICZ_ILLUMINANCE "Luminancia"
-  #define D_DOMOTICZ_COUNT "Contador"
-  #define D_DOMOTICZ_VOLTAGE "Voltaje"
-  #define D_DOMOTICZ_CURRENT "Corriente"
+  #define D_DOMOTICZ_COUNT "Contador/PM1"
+  #define D_DOMOTICZ_VOLTAGE "Voltaje/PM2,5"
+  #define D_DOMOTICZ_CURRENT "Corriente/PM10"
   #define D_DOMOTICZ_AIRQUALITY "Calidad del Aire"
 #define D_DOMOTICZ_UPDATE_TIMER "Intervalo de refresco"
+
+// xdrv_09_timers.ino
+#define D_CONFIGURE_TIMER "Configuración Temporizadores"
+#define D_TIMER_PARAMETERS "Parámetros de Temporizadores"
+#define D_TIMER_ARM "Activo"
+#define D_TIMER_TIME "Hora"
+#define D_TIMER_DAYS "Días"
+#define D_TIMER_REPEAT "Repetir"
+#define D_TIMER_OUTPUT "Salida"
+#define D_TIMER_ACTION "Estado"
+
+// xdrv_10_knx.ino
+#define D_CONFIGURE_KNX "Configuración de KNX"
+#define D_KNX_PARAMETERS "Parámetros de KNX"
+#define D_KNX_GENERAL_CONFIG "General"
+#define D_KNX_PHYSICAL_ADDRESS "Dirección Física"
+#define D_KNX_PHYSICAL_ADDRESS_NOTE "( Debe ser única en la red KNX )"
+#define D_KNX_ENABLE "Habilitar KNX"
+#define D_KNX_GROUP_ADDRESS_TO_WRITE "Datos a Enviar a las Direcciones de Grupo"
+#define D_ADD "Agregar"
+#define D_DELETE "Eliminar"
+#define D_REPLY "Responder"
+#define D_KNX_GROUP_ADDRESS_TO_READ "Direcciones de Grupo para Recibir Datos"
+#define D_LOG_KNX "KNX: "
+#define D_RECEIVED_FROM "Recibido desde"
+#define D_KNX_COMMAND_WRITE "Escribir"
+#define D_KNX_COMMAND_READ "Leer"
+#define D_KNX_COMMAND_OTHER "Otro"
+#define D_SENT_TO "enviada a"
+#define D_KNX_WARNING "La dirección de grupo ( 0 / 0 / 0 ) está reservada y no puede ser utilizada."
+#define D_KNX_ENHANCEMENT "Mejora de Comunicación"
 
 // xdrv_03_energy.ino
 #define D_ENERGY_TODAY "Energía Hoy"
@@ -407,9 +456,20 @@
 #define D_SENSOR_SPI_DC   "SPI DC"
 #define D_SENSOR_BACKLIGHT "BkLight"
 #define D_SENSOR_PMS5003  "PMS5003"
+#define D_SENSOR_SDS0X1   "SDS0X1"
+#define D_SENSOR_SBR_RX   "SerBr Rx"
+#define D_SENSOR_SBR_TX   "SerBr Tx"
+#define D_SENSOR_SR04_TRIG "SR04 Tri"
+#define D_SENSOR_SR04_ECHO "SR04 Ech"
+#define D_SENSOR_SDM120_TX "SDM120 Tx"
+#define D_SENSOR_SDM120_RX "SDM120 Rx"
+#define D_SENSOR_SDM630_TX "SDM630 Tx"
+#define D_SENSOR_SDM630_RX "SDM630 Rx"
 
 // Units
 #define D_UNIT_AMPERE "A"
+#define D_UNIT_CENTIMETER "cm"
+#define D_UNIT_HERTZ "Hz"
 #define D_UNIT_HOUR "Hr"
 #define D_UNIT_KILOOHM "kOhm"
 #define D_UNIT_KILOWATTHOUR "kWh"
@@ -420,11 +480,14 @@
 #define D_UNIT_MILLIAMPERE "mA"
 #define D_UNIT_MILLISECOND "ms"
 #define D_UNIT_MINUTE "Min"
+#define D_UNIT_PARTS_PER_BILLION "ppb"
 #define D_UNIT_PARTS_PER_DECILITER "ppd"
 #define D_UNIT_PARTS_PER_MILLION "ppm"
 #define D_UNIT_PRESSURE "hPa"
 #define D_UNIT_SECOND "seg"
 #define D_UNIT_SECTORS "sectores"
+#define D_UNIT_VA "VA"
+#define D_UNIT_VAR "VAr"
 #define D_UNIT_VOLT "V"
 #define D_UNIT_WATT "W"
 #define D_UNIT_WATTHOUR "Wh"

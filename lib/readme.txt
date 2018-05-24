@@ -8,13 +8,17 @@ The source code of each library should be placed in separate directory, like
 For example, see how can be organized `Foo` and `Bar` libraries:
 
 |--lib
+<<<<<<< HEAD
 |  |
+=======
+>>>>>>> upstream/development
 |  |--Bar
 |  |  |--docs
 |  |  |--examples
 |  |  |--src
 |  |     |- Bar.c
 |  |     |- Bar.h
+<<<<<<< HEAD
 |  |  |- library.json (optional, custom build options, etc) http://docs.platformio.org/page/librarymanager/config.html
 |  |
 |  |--Foo
@@ -23,6 +27,12 @@ For example, see how can be organized `Foo` and `Bar` libraries:
 |  |
 |  |- readme.txt --> THIS FILE
 |
+=======
+|  |--Foo
+|  |  |- Foo.c
+|  |  |- Foo.h
+|  |- readme.txt --> THIS FILE
+>>>>>>> upstream/development
 |- platformio.ini
 |--src
    |- main.c
@@ -32,7 +42,11 @@ Then in `src/main.c` you should use:
 #include <Foo.h>
 #include <Bar.h>
 
+<<<<<<< HEAD
 // rest H/C/CPP code - develop
+=======
+// rest H/C/CPP code
+>>>>>>> upstream/development
 
 PlatformIO will find your libraries automatically, configure preprocessor's
 include paths and build them.

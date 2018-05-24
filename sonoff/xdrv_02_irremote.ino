@@ -26,7 +26,11 @@
 
 // Based on IRremoteESP8266.h enum decode_type_t
 const char kIrRemoteProtocols[] PROGMEM =
+<<<<<<< HEAD
   "UNUSED|RC5|RC6|NEC|SONY|PANASONIC|JVC|SAMSUNG|WHYNTER|AIWA_RC_T501|LG|SANYO|MITSUBISHI|DISH|SHARP|COOLIX|DAIKIN|DENON|KELVINATOR|SHERWOOD|MITSUBISHI_AC|RCMM|SANYO_LC7461|RC5X|GREE|PRONTO|NEC_LIKE|ARGO|TROTEC|NIKAI|RAW|GLOBALCACHE|TOSHIBA_AC|FUJITSU_AC|MIDEA|MAGIQUEST|LASERTAG|CARRIER_AC|HAIER_AC|MITSUBISHI2|HITACHI_AC|GICABLE";
+=======
+  "UNKNOWN|RC5|RC6|NEC|SONY|PANASONIC|JVC|SAMSUNG|WHYNTER|AIWA_RC_T501|LG|SANYO|MITSUBISHI|DISH|SHARP";
+>>>>>>> upstream/development
 
 #ifdef USE_IR_HVAC
 
@@ -110,6 +114,10 @@ void IrReceiveCheck()
       snprintf_P(mqtt_data, sizeof(mqtt_data), PSTR("{\"" D_JSON_IRRECEIVED "\":{\"" D_JSON_IR_PROTOCOL "\":\"%s\",\"" D_JSON_IR_BITS "\":%d,\"" D_JSON_IR_DATA "\":\"%lX\"}}"),
         GetTextIndexed(sirtype, sizeof(sirtype), iridx, kIrRemoteProtocols), results.bits, (uint32_t)results.value);
       MqttPublishPrefixTopic_P(RESULT_OR_TELE, PSTR(D_JSON_IRRECEIVED));
+<<<<<<< HEAD
+=======
+      XdrvRulesProcess();
+>>>>>>> upstream/development
 #ifdef USE_DOMOTICZ
       unsigned long value = results.value | (iridx << 28);  // [Protocol:4, Data:28]
       DomoticzSensor(DZ_COUNT, value);                      // Send data as Domoticz Counter value
@@ -284,6 +292,7 @@ boolean IrSendCommand()
   uint32_t bits = 0;
   uint32_t data = 0;
 
+<<<<<<< HEAD
   for (uint16_t i = 0; i <= sizeof(dataBufUc); i++) {
     dataBufUc[i] = toupper(XdrvMailbox.data[i]);
   }
@@ -292,10 +301,19 @@ boolean IrSendCommand()
       StaticJsonBuffer<128> jsonBuf;
       JsonObject &ir_json = jsonBuf.parseObject(dataBufUc);
       if (!ir_json.success()) {
+=======
+  UpperCase(dataBufUc, XdrvMailbox.data);
+  if (!strcasecmp_P(XdrvMailbox.topic, PSTR(D_CMND_IRSEND))) {
+    if (XdrvMailbox.data_len) {
+      StaticJsonBuffer<128> jsonBuf;
+      JsonObject &root = jsonBuf.parseObject(dataBufUc);
+      if (!root.success()) {
+>>>>>>> upstream/development
         snprintf_P(mqtt_data, sizeof(mqtt_data), PSTR("{\"" D_CMND_IRSEND "\":\"" D_JSON_INVALID_JSON "\"}")); // JSON decode failed
       }
       else {
         snprintf_P(mqtt_data, sizeof(mqtt_data), PSTR("{\"" D_CMND_IRSEND "\":\"" D_JSON_DONE "\"}"));
+<<<<<<< HEAD
         protocol = ir_json[D_JSON_IR_PROTOCOL];
         bits = ir_json[D_JSON_IR_BITS];
         data = ir_json[D_JSON_IR_DATA];
@@ -304,6 +322,17 @@ boolean IrSendCommand()
 
           snprintf_P(log_data, sizeof(log_data), PSTR("IRS: protocol_text %s, protocol %s, bits %d, data %d, protocol_code %d"),
             protocol_text, protocol, bits, data, protocol_code);
+=======
+        char parm_uc[10];
+        protocol = root[UpperCase_P(parm_uc, PSTR(D_JSON_IR_PROTOCOL))];
+        bits = root[UpperCase_P(parm_uc, PSTR(D_JSON_IR_BITS))];
+        data = strtoul(root[UpperCase_P(parm_uc, PSTR(D_JSON_IR_DATA))], NULL, 0);
+        if (protocol && bits) {
+          int protocol_code = GetCommandCode(protocol_text, sizeof(protocol_text), protocol, kIrRemoteProtocols);
+
+          snprintf_P(log_data, sizeof(log_data), PSTR("IRS: protocol_text %s, protocol %s, bits %d, data %u (0x%lX), protocol_code %d"),
+            protocol_text, protocol, bits, data, data, protocol_code);
+>>>>>>> upstream/development
           AddLog(LOG_LEVEL_DEBUG);
 
           switch (protocol_code) {
@@ -320,11 +349,17 @@ boolean IrSendCommand()
             case JVC:
               irsend->sendJVC(data, (bits > JVC_BITS) ? JVC_BITS : bits, 1); break;
             case SAMSUNG:
+<<<<<<< HEAD
               irsend->sendSAMSUNG(data, (bits > SAMSUNG_BITS) ? SAMSUNG_BITS : bits ); break;
             case PANASONIC:
               irsend->sendPanasonic(bits, data); break;
             case GICABLE:
                 irsend->sendGICable(data, bits); break;
+=======
+              irsend->sendSAMSUNG(data, (bits > SAMSUNG_BITS) ? SAMSUNG_BITS : bits); break;
+            case PANASONIC:
+              irsend->sendPanasonic(bits, data); break;
+>>>>>>> upstream/development
             default:
               snprintf_P(mqtt_data, sizeof(mqtt_data), PSTR("{\"" D_CMND_IRSEND "\":\"" D_JSON_PROTOCOL_NOT_SUPPORTED "\"}"));
           }
@@ -387,6 +422,10 @@ boolean IrSendCommand()
   }
 #endif // USE_IR_HVAC
   else serviced = false; // Unknown command
+<<<<<<< HEAD
+=======
+
+>>>>>>> upstream/development
   return serviced;
 }
 

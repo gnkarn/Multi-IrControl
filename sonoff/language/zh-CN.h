@@ -28,9 +28,14 @@
  * Use online command StateText to translate ON, OFF, HOLD and TOGGLE.
  * Use online command Prefix to translate cmnd, stat and tele.
  *
+ * Updated until v5.12.0d
 \*********************************************************************/
 
 //#define LANGUAGE_MODULE_NAME         // Enable to display "Module Generic" (ie Spanish), Disable to display "Generic Module" (ie English)
+
+#define LANGUAGE_LCID 2052
+// HTML (ISO 639-1) Language Code
+#define D_HTML_LANGUAGE "zh"
 
 // "2017-03-07T11:08:02" - ISO8601:2004
 #define D_YEAR_MONTH_SEPARATOR "-"
@@ -71,9 +76,11 @@
 #define D_DARKLIGHT "Dark"
 #define D_DEBUG "调试"
 #define D_DISABLED "禁用"
+#define D_DISTANCE "Distance"
 #define D_DNS_SERVER "DNS服务器"
 #define D_DONE "完成"
 #define D_DST_TIME "DST"
+#define D_ECO2 "eCO2"
 #define D_EMULATION "设备模拟"
 #define D_ENABLED "启用"
 #define D_ERASE "擦除"
@@ -85,6 +92,7 @@
 #define D_FALSE "False"
 #define D_FILE "文件:"
 #define D_FREE_MEMORY "空闲内存"
+#define D_FREQUENCY "Frequency"
 #define D_GAS "气体"
 #define D_GATEWAY "网关"
 #define D_GROUP "组:"
@@ -95,6 +103,7 @@
 #define D_IMMEDIATE "immediate"      // Button immediate
 #define D_INDEX "索引:"
 #define D_INFO "信息"
+#define D_INFRARED "Infrared"
 #define D_INITIALIZED "初始化完成"
 #define D_IP_ADDRESS "IP地址"
 #define D_LIGHT "灯"
@@ -113,6 +122,9 @@
 #define D_PORT "端口"
 #define D_POWER_FACTOR "功率因数"
 #define D_POWERUSAGE "功率"
+#define D_POWERUSAGE_ACTIVE "Active Power"
+#define D_POWERUSAGE_APPARENT "Apparent Power"
+#define D_POWERUSAGE_REACTIVE "Reactive Power"
 #define D_PRESSURE "气压"
 #define D_PRESSUREATSEALEVEL "海平面气压"
 #define D_PROGRAM_FLASH_SIZE "固件 Flash 大小"
@@ -124,6 +136,7 @@
 #define D_RESTART_REASON "重启原因"
 #define D_RESTORE "恢复"
 #define D_RETAINED "已保留"
+#define D_RULE "Rule"
 #define D_SAVE "保存"
 #define D_SENSOR "传感器"
 #define D_SSID "名称"
@@ -133,17 +146,21 @@
 #define D_SUBNET_MASK "子网掩码"
 #define D_SUBSCRIBE_TO "订阅"
 #define D_SUCCESSFUL "成功"
+#define D_SUNRISE "Sunrise"
+#define D_SUNSET "Sunset"
 #define D_TEMPERATURE "温度"
 #define D_TO "to"
 #define D_TOGGLE "切换"
 #define D_TOPIC "主题"
 #define D_TRANSMIT "发送"
 #define D_TRUE "True"
+#define D_TVOC "TVOC"
 #define D_UPGRADE "升级"
 #define D_UPLOAD "上传"
 #define D_UPTIME "运行时间"
 #define D_USER "用户名"
 #define D_UTC_TIME "UTC"
+#define D_UV_INDEX "UV Index"
 #define D_UV_LEVEL "紫外线水平"
 #define D_VERSION "版本"
 #define D_VOLTAGE "电压"
@@ -161,13 +178,6 @@
 #define D_RECEIVED_TOPIC "接收到的主题:"
 #define D_DATA_SIZE "数据大小:"
 #define D_ANALOG_INPUT "Analog"
-
-#define D_FINGERPRINT "验证 TLS 指纹..."
-#define D_TLS_CONNECT_FAILED_TO "TLS 连接失败"
-#define D_RETRY_IN "重试倒计时:"
-#define D_VERIFIED "验证成功"
-#define D_INSECURE "指纹无效导致连接不安全"
-#define D_CONNECT_FAILED_TO "连接失败:"
 
 // support.ino
 #define D_OSWATCH "osWatch"
@@ -317,6 +327,14 @@
 #define D_ENABLE_WEBLOG_FOR_RESPONSE "如果预期响应，则启用Weblog 2"
 #define D_NEED_USER_AND_PASSWORD "需要 user=<用户名>&password=<密码>"
 
+// xdrv_00_mqtt.ino
+#define D_FINGERPRINT "验证 TLS 指纹..."
+#define D_TLS_CONNECT_FAILED_TO "TLS 连接失败"
+#define D_RETRY_IN "重试倒计时:"
+#define D_VERIFIED "验证成功"
+#define D_INSECURE "指纹无效导致连接不安全"
+#define D_CONNECT_FAILED_TO "连接失败:"
+
 // xdrv_wemohue.ino
 #define D_MULTICAST_DISABLED "组播已禁用"
 #define D_MULTICAST_REJOINED "组播已(重新)加入"
@@ -348,11 +366,42 @@
   #define D_DOMOTICZ_TEMP_HUM_BARO "温度,湿度,气压"
   #define D_DOMOTICZ_POWER_ENERGY "功率,电量"
   #define D_DOMOTICZ_ILLUMINANCE "照度"
-  #define D_DOMOTICZ_COUNT "数值"
-  #define D_DOMOTICZ_VOLTAGE "电压"
-  #define D_DOMOTICZ_CURRENT "电流"
+  #define D_DOMOTICZ_COUNT "数值/PM1"
+  #define D_DOMOTICZ_VOLTAGE "电压/PM2.5"
+  #define D_DOMOTICZ_CURRENT "电流/PM10"
   #define D_DOMOTICZ_AIRQUALITY "空气质量"
 #define D_DOMOTICZ_UPDATE_TIMER "更新计时器"
+
+// xdrv_09_timers.ino
+#define D_CONFIGURE_TIMER "Configure Timer"
+#define D_TIMER_PARAMETERS "Timer parameters"
+#define D_TIMER_ARM "Arm"
+#define D_TIMER_TIME "Time"
+#define D_TIMER_DAYS "Days"
+#define D_TIMER_REPEAT "Repeat"
+#define D_TIMER_OUTPUT "Output"
+#define D_TIMER_ACTION "Action"
+
+// xdrv_10_knx.ino
+#define D_CONFIGURE_KNX "Configure KNX"
+#define D_KNX_PARAMETERS "KNX Parameters"
+#define D_KNX_GENERAL_CONFIG "General"
+#define D_KNX_PHYSICAL_ADDRESS "Physical Address"
+#define D_KNX_PHYSICAL_ADDRESS_NOTE "( Must be unique on the KNX network )"
+#define D_KNX_ENABLE "Enable KNX"
+#define D_KNX_GROUP_ADDRESS_TO_WRITE "Data to Send to Group Addresses"
+#define D_ADD "Add"
+#define D_DELETE "Delete"
+#define D_REPLY "Reply"
+#define D_KNX_GROUP_ADDRESS_TO_READ "Group Addresses to Receive Data from"
+#define D_LOG_KNX "KNX: "
+#define D_RECEIVED_FROM "Received from"
+#define D_KNX_COMMAND_WRITE "Write"
+#define D_KNX_COMMAND_READ "Read"
+#define D_KNX_COMMAND_OTHER "Other"
+#define D_SENT_TO "sent to"
+#define D_KNX_WARNING "The group address ( 0 / 0 / 0 ) is reserved and can not be used."
+#define D_KNX_ENHANCEMENT "Communication Enhancement"
 
 // xdrv_03_energy.ino
 #define D_ENERGY_TODAY "今日用电量"
@@ -407,9 +456,20 @@
 #define D_SENSOR_SPI_DC   "SPI DC"
 #define D_SENSOR_BACKLIGHT "BkLight"
 #define D_SENSOR_PMS5003  "PMS5003"
+#define D_SENSOR_SDS0X1   "SDS0X1"
+#define D_SENSOR_SBR_RX   "SerBr Rx"
+#define D_SENSOR_SBR_TX   "SerBr Tx"
+#define D_SENSOR_SR04_TRIG "SR04 Tri"
+#define D_SENSOR_SR04_ECHO "SR04 Ech"
+#define D_SENSOR_SDM120_TX "SDM120 Tx"
+#define D_SENSOR_SDM120_RX "SDM120 Rx"
+#define D_SENSOR_SDM630_TX "SDM630 Tx"
+#define D_SENSOR_SDM630_RX "SDM630 Rx"
 
 // Units
 #define D_UNIT_AMPERE "安"
+#define D_UNIT_CENTIMETER "cm"
+#define D_UNIT_HERTZ "Hz"
 #define D_UNIT_HOUR "时"
 #define D_UNIT_KILOOHM "千欧"
 #define D_UNIT_KILOWATTHOUR "千瓦时"
@@ -420,11 +480,14 @@
 #define D_UNIT_MILLIAMPERE "毫安"
 #define D_UNIT_MILLISECOND "毫秒"
 #define D_UNIT_MINUTE "分"
+#define D_UNIT_PARTS_PER_BILLION "ppb"
 #define D_UNIT_PARTS_PER_DECILITER "每分升"
 #define D_UNIT_PARTS_PER_MILLION "ppm"
 #define D_UNIT_PRESSURE "百帕"
 #define D_UNIT_SECOND "秒"
 #define D_UNIT_SECTORS "扇区"
+#define D_UNIT_VA "VA"
+#define D_UNIT_VAR "VAr"
 #define D_UNIT_VOLT "伏"
 #define D_UNIT_WATT "瓦"
 #define D_UNIT_WATTHOUR "瓦时"

@@ -49,8 +49,6 @@
 #ifndef MTX_ADDRESS8
 #define MTX_ADDRESS8           0
 #endif
-<<<<<<< HEAD
-=======
 
 #ifndef HOME_ASSISTANT_DISCOVERY_ENABLE
 #define HOME_ASSISTANT_DISCOVERY_ENABLE 0
@@ -62,7 +60,6 @@
 #ifndef LONGITUDE
 #define LONGITUDE              2.294442          // [Longitude] Your location to be used with sunrise and sunset
 #endif
->>>>>>> upstream/development
 
 /*********************************************************************************************\
  * RTC memory
@@ -122,44 +119,6 @@ boolean RtcSettingsValid()
   return (RTC_MEM_VALID == RtcSettings.valid);
 }
 
-<<<<<<< HEAD
-#ifdef DEBUG_THEO
-void RtcSettingsDump()
-{
-  #define CFG_COLS 16
-
-  uint16_t idx;
-  uint16_t maxrow;
-  uint16_t row;
-  uint16_t col;
-
-  uint8_t *buffer = (uint8_t *) &RtcSettings;
-  maxrow = ((sizeof(RTCMEM)+CFG_COLS)/CFG_COLS);
-
-  for (row = 0; row < maxrow; row++) {
-    idx = row * CFG_COLS;
-    snprintf_P(log_data, sizeof(log_data), PSTR("%03X:"), idx);
-    for (col = 0; col < CFG_COLS; col++) {
-      if (!(col%4)) {
-        snprintf_P(log_data, sizeof(log_data), PSTR("%s "), log_data);
-      }
-      snprintf_P(log_data, sizeof(log_data), PSTR("%s %02X"), log_data, buffer[idx + col]);
-    }
-    snprintf_P(log_data, sizeof(log_data), PSTR("%s |"), log_data);
-    for (col = 0; col < CFG_COLS; col++) {
-//      if (!(col%4)) {
-//        snprintf_P(log_data, sizeof(log_data), PSTR("%s "), log_data);
-//      }
-      snprintf_P(log_data, sizeof(log_data), PSTR("%s%c"), log_data, ((buffer[idx + col] > 0x20) && (buffer[idx + col] < 0x7F)) ? (char)buffer[idx + col] : ' ');
-    }
-    snprintf_P(log_data, sizeof(log_data), PSTR("%s|"), log_data);
-    AddLog(LOG_LEVEL_INFO);
-  }
-}
-#endif  // DEBUG_THEO
-
-=======
->>>>>>> upstream/development
 /*********************************************************************************************\
  * Config - Flash
 \*********************************************************************************************/
@@ -184,10 +143,7 @@ extern "C" uint32_t _SPIFFS_end;
 
 uint32_t settings_hash = 0;
 uint32_t settings_location = SETTINGS_LOCATION;
-<<<<<<< HEAD
-=======
 uint8_t *settings_buffer = NULL;
->>>>>>> upstream/development
 
 /********************************************************************************************/
 /*
@@ -212,8 +168,6 @@ void SetFlashModeDout()
   delete[] _buffer;
 }
 
-<<<<<<< HEAD
-=======
 void SettingsBufferFree()
 {
   if (settings_buffer != NULL) {
@@ -232,7 +186,6 @@ bool SettingsBufferAlloc()
   return true;
 }
 
->>>>>>> upstream/development
 uint32_t GetSettingsHash()
 {
   uint32_t hash = 0;
@@ -291,23 +244,11 @@ void SettingsSave(byte rotate)
       }
     }
     Settings.save_flag++;
-<<<<<<< HEAD
-    noInterrupts();
-    spi_flash_erase_sector(settings_location);
-    spi_flash_write(settings_location * SPI_FLASH_SEC_SIZE, (uint32*)&Settings, sizeof(SYSCFG));
-    interrupts();
-    if (!stop_flash_rotate && rotate) {
-      for (byte i = 1; i < CFG_ROTATES; i++) {
-        noInterrupts();
-        spi_flash_erase_sector(settings_location -i);  // Delete previous configurations by resetting to 0xFF
-        interrupts();
-=======
     ESP.flashEraseSector(settings_location);
     ESP.flashWrite(settings_location * SPI_FLASH_SEC_SIZE, (uint32*)&Settings, sizeof(SYSCFG));
     if (!stop_flash_rotate && rotate) {
       for (byte i = 1; i < CFG_ROTATES; i++) {
         ESP.flashEraseSector(settings_location -i);  // Delete previous configurations by resetting to 0xFF
->>>>>>> upstream/development
         delay(1);
       }
     }
@@ -332,15 +273,8 @@ void SettingsLoad()
   settings_location = SETTINGS_LOCATION +1;
   for (byte i = 0; i < CFG_ROTATES; i++) {
     settings_location--;
-<<<<<<< HEAD
-    noInterrupts();
-    spi_flash_read(settings_location * SPI_FLASH_SEC_SIZE, (uint32*)&Settings, sizeof(SYSCFG));
-    spi_flash_read((settings_location -1) * SPI_FLASH_SEC_SIZE, (uint32*)&_SettingsH, sizeof(SYSCFGH));
-    interrupts();
-=======
     ESP.flashRead(settings_location * SPI_FLASH_SEC_SIZE, (uint32*)&Settings, sizeof(SYSCFG));
     ESP.flashRead((settings_location -1) * SPI_FLASH_SEC_SIZE, (uint32*)&_SettingsH, sizeof(SYSCFGH));
->>>>>>> upstream/development
 
 //  snprintf_P(log_data, sizeof(log_data), PSTR("Cnfg: Check at %X with count %d and holder %X"), settings_location -1, _SettingsH.save_flag, _SettingsH.cfg_holder);
 //  AddLog(LOG_LEVEL_DEBUG);
@@ -355,22 +289,10 @@ void SettingsLoad()
   AddLog(LOG_LEVEL_DEBUG);
   if (Settings.cfg_holder != CFG_HOLDER) {
     // Auto upgrade
-<<<<<<< HEAD
-    noInterrupts();
-    spi_flash_read((SETTINGS_LOCATION_3) * SPI_FLASH_SEC_SIZE, (uint32*)&Settings, sizeof(SYSCFG));
-    spi_flash_read((SETTINGS_LOCATION_3 + 1) * SPI_FLASH_SEC_SIZE, (uint32*)&_SettingsH, sizeof(SYSCFGH));
-    if (Settings.save_flag < _SettingsH.save_flag)
-      spi_flash_read((SETTINGS_LOCATION_3 + 1) * SPI_FLASH_SEC_SIZE, (uint32*)&Settings, sizeof(SYSCFG));
-    interrupts();
-    if ((Settings.cfg_holder != CFG_HOLDER) || (Settings.version >= 0x04020000)) {
-      SettingsDefault();
-    }
-=======
     ESP.flashRead((SETTINGS_LOCATION_3) * SPI_FLASH_SEC_SIZE, (uint32*)&Settings, sizeof(SYSCFG));
     ESP.flashRead((SETTINGS_LOCATION_3 + 1) * SPI_FLASH_SEC_SIZE, (uint32*)&_SettingsH, sizeof(SYSCFGH));
     if (Settings.save_flag < _SettingsH.save_flag) ESP.flashRead((SETTINGS_LOCATION_3 + 1) * SPI_FLASH_SEC_SIZE, (uint32*)&Settings, sizeof(SYSCFG));
     if ((Settings.cfg_holder != CFG_HOLDER) || (Settings.version >= 0x04020000)) SettingsDefault();
->>>>>>> upstream/development
   }
 
   settings_hash = GetSettingsHash();
@@ -378,11 +300,6 @@ void SettingsLoad()
   RtcSettingsLoad();
 }
 
-<<<<<<< HEAD
-void SettingsErase()
-{
-  SpiFlashOpResult result;
-=======
 void SettingsErase(uint8_t type)
 {
   /*
@@ -391,7 +308,6 @@ void SettingsErase(uint8_t type)
   */
 
   bool result;
->>>>>>> upstream/development
 
   uint32_t _sectorStart = (ESP.getSketchSize() / SPI_FLASH_SEC_SIZE) + 1;
   uint32_t _sectorEnd = ESP.getFlashChipRealSize() / SPI_FLASH_SEC_SIZE;
@@ -421,56 +337,6 @@ void SettingsErase(uint8_t type)
   }
 }
 
-<<<<<<< HEAD
-void SettingsDump(char* parms)
-{
-  #define CFG_COLS 16
-
-  uint16_t idx;
-  uint16_t maxrow;
-  uint16_t row;
-  uint16_t col;
-  char *p;
-
-  uint8_t *buffer = (uint8_t *) &Settings;
-  maxrow = ((sizeof(SYSCFG)+CFG_COLS)/CFG_COLS);
-
-  uint16_t srow = strtol(parms, &p, 16) / CFG_COLS;
-  uint16_t mrow = strtol(p, &p, 10);
-
-//  snprintf_P(log_data, sizeof(log_data), PSTR("Cnfg: Parms %s, Start row %d, rows %d"), parms, srow, mrow);
-//  AddLog(LOG_LEVEL_DEBUG);
-
-  if (0 == mrow) {  // Default only 8 lines
-    mrow = 8;
-  }
-  if (srow > maxrow) {
-    srow = maxrow - mrow;
-  }
-  if (mrow < (maxrow - srow)) {
-    maxrow = srow + mrow;
-  }
-
-  for (row = srow; row < maxrow; row++) {
-    idx = row * CFG_COLS;
-    snprintf_P(log_data, sizeof(log_data), PSTR("%03X:"), idx);
-    for (col = 0; col < CFG_COLS; col++) {
-      if (!(col%4)) {
-        snprintf_P(log_data, sizeof(log_data), PSTR("%s "), log_data);
-      }
-      snprintf_P(log_data, sizeof(log_data), PSTR("%s %02X"), log_data, buffer[idx + col]);
-    }
-    snprintf_P(log_data, sizeof(log_data), PSTR("%s |"), log_data);
-    for (col = 0; col < CFG_COLS; col++) {
-//      if (!(col%4)) {
-//        snprintf_P(log_data, sizeof(log_data), PSTR("%s "), log_data);
-//      }
-      snprintf_P(log_data, sizeof(log_data), PSTR("%s%c"), log_data, ((buffer[idx + col] > 0x20) && (buffer[idx + col] < 0x7F)) ? (char)buffer[idx + col] : ' ');
-    }
-    snprintf_P(log_data, sizeof(log_data), PSTR("%s|"), log_data);
-    AddLog(LOG_LEVEL_INFO);
-    delay(1);
-=======
 // Copied from 2.4.0 as 2.3.0 is incomplete
 bool SettingsEraseConfig(void) {
   const size_t cfgSize = 0x4000;
@@ -480,7 +346,6 @@ bool SettingsEraseConfig(void) {
     if (!ESP.flashEraseSector((cfgAddr + offset) / SPI_FLASH_SEC_SIZE)) {
       return false;
     }
->>>>>>> upstream/development
   }
   return true;
 }
@@ -525,10 +390,7 @@ void SettingsDefaultSet2()
   Settings.flag.mqtt_power_retain = MQTT_POWER_RETAIN;
   Settings.flag.mqtt_button_retain = MQTT_BUTTON_RETAIN;
   Settings.flag.mqtt_switch_retain = MQTT_SWITCH_RETAIN;
-<<<<<<< HEAD
-=======
   Settings.flag.pwm_control = 1;
->>>>>>> upstream/development
   Settings.flag.hass_discovery = HOME_ASSISTANT_DISCOVERY_ENABLE;
 
   Settings.flag2.emulation = EMULATION;
@@ -536,12 +398,9 @@ void SettingsDefaultSet2()
   Settings.save_data = SAVE_DATA;
   Settings.timezone = APP_TIMEZONE;
   strlcpy(Settings.ota_url, OTA_URL, sizeof(Settings.ota_url));
-<<<<<<< HEAD
-=======
   Settings.baudrate = APP_BAUDRATE / 1200;
   Settings.sbaudrate = SOFT_BAUDRATE / 1200;
   Settings.serial_delimiter = 0xff;
->>>>>>> upstream/development
 
   Settings.seriallog_level = SERIAL_LOG_LEVEL;
 //  Settings.sta_active = 0;
@@ -557,9 +416,6 @@ void SettingsDefaultSet2()
   Settings.webserver = WEB_SERVER;
   Settings.weblog_level = WEB_LOG_LEVEL;
 
-<<<<<<< HEAD
-  strlcpy(Settings.mqtt_fingerprint, MQTT_FINGERPRINT, sizeof(Settings.mqtt_fingerprint));
-=======
   char fingerprint[60];
   strlcpy(fingerprint, MQTT_FINGERPRINT1, sizeof(fingerprint));
   char *p = fingerprint;
@@ -572,7 +428,6 @@ void SettingsDefaultSet2()
     Settings.mqtt_fingerprint[1][i] = strtol(p, &p, 16);
   }
 
->>>>>>> upstream/development
   strlcpy(Settings.mqtt_host, MQTT_HOST, sizeof(Settings.mqtt_host));
   Settings.mqtt_port = MQTT_PORT;
   strlcpy(Settings.mqtt_client, MQTT_CLIENT_ID, sizeof(Settings.mqtt_client));
@@ -598,10 +453,7 @@ void SettingsDefaultSet2()
 //    Settings.domoticz_switch_idx[i] = 0;
   }
 
-<<<<<<< HEAD
-=======
   Settings.energy_power_delta = DEFAULT_POWER_DELTA;
->>>>>>> upstream/development
   Settings.energy_power_calibration = HLW_PREF_PULSE;
   Settings.energy_voltage_calibration = HLW_UREF_PULSE;
   Settings.energy_current_calibration = HLW_IREF_PULSE;
@@ -614,16 +466,6 @@ void SettingsDefaultSet2()
 //  Settings.energy_max_voltage = 0;
 //  Settings.energy_min_current = 0;
 //  Settings.energy_max_current = 0;
-<<<<<<< HEAD
-//  Settings.energy_max_power_limit = 0;                              // MaxPowerLimit
-  Settings.energy_max_power_limit_hold = MAX_POWER_HOLD;
-  Settings.energy_max_power_limit_window = MAX_POWER_WINDOW;
-//  Settings.energy_max_power_safe_limit = 0;                             // MaxSafePowerLimit
-  Settings.energy_max_power_safe_limit_hold = SAFE_POWER_HOLD;
-  Settings.energy_max_power_safe_limit_window = SAFE_POWER_WINDOW;
-//  Settings.energy_max_energy = 0;                             // MaxEnergy
-//  Settings.energy_max_energy_start = 0;                            // MaxEnergyStart
-=======
 //  Settings.energy_max_power_limit = 0;                            // MaxPowerLimit
   Settings.energy_max_power_limit_hold = MAX_POWER_HOLD;
   Settings.energy_max_power_limit_window = MAX_POWER_WINDOW;
@@ -632,7 +474,6 @@ void SettingsDefaultSet2()
   Settings.energy_max_power_safe_limit_window = SAFE_POWER_WINDOW;
 //  Settings.energy_max_energy = 0;                                 // MaxEnergy
 //  Settings.energy_max_energy_start = 0;                           // MaxEnergyStart
->>>>>>> upstream/development
 
   SettingsDefaultSet_3_2_4();
 
@@ -683,24 +524,13 @@ void SettingsDefaultSet2()
 
   // 5.8.0
   Settings.light_pixels = WS2812_LEDS;
-<<<<<<< HEAD
-=======
 //  Settings.light_rotation = 0;
->>>>>>> upstream/development
 
   // 5.8.1
 //  Settings.altitude = 0;
   Settings.pwm_frequency = PWM_FREQ;
   Settings.pwm_range = PWM_RANGE;
   SettingsDefaultSet_5_8_1();
-<<<<<<< HEAD
-
-  // 5.9.2
-  Settings.flag2.current_resolution = 3;
-
-  // 5.10.1
-  SettingsDefaultSet_5_10_1();
-=======
 
   // 5.9.2
   Settings.flag2.current_resolution = 3;
@@ -712,17 +542,12 @@ void SettingsDefaultSet2()
   Settings.longitude = (int)((double)LONGITUDE * 1000000);
 
   SettingsDefaultSet_5_13_1c();
->>>>>>> upstream/development
 }
 
 /********************************************************************************************/
 
 void SettingsDefaultSet_3_2_4()
 {
-<<<<<<< HEAD
-  Settings.ws_pixels = WS2812_LEDS;
-=======
->>>>>>> upstream/development
   Settings.ws_red = 255;
   Settings.ws_green = 0;
   Settings.ws_blue = 0;
@@ -750,10 +575,7 @@ void SettingsDefaultSet_3_9_3()
   }
 
   Settings.light_pixels = WS2812_LEDS;
-<<<<<<< HEAD
-=======
   Settings.light_rotation = 0;
->>>>>>> upstream/development
   for (byte i = 0; i < MAX_PWMS; i++) {
     Settings.light_color[i] = 255;
   }
@@ -796,61 +618,6 @@ void SettingsDefaultSet_4_0_9()
 }
 
 void SettingsDefaultSet_4_1_1()
-<<<<<<< HEAD
-{
-  strlcpy(Settings.state_text[0], MQTT_STATUS_OFF, sizeof(Settings.state_text[0]));
-  strlcpy(Settings.state_text[1], MQTT_STATUS_ON, sizeof(Settings.state_text[1]));
-  strlcpy(Settings.state_text[2], MQTT_CMND_TOGGLE, sizeof(Settings.state_text[2]));
-  strlcpy(Settings.state_text[3], MQTT_CMND_HOLD, sizeof(Settings.state_text[3]));  // v5.1.6
-}
-
-void SettingsDefaultSet_5_0_2()
-{
-  Settings.flag.temperature_conversion = TEMP_CONVERSION;
-  Settings.flag2.temperature_resolution = TEMP_RESOLUTION;
-  Settings.flag2.humidity_resolution = HUMIDITY_RESOLUTION;
-  Settings.flag2.pressure_resolution = PRESSURE_RESOLUTION;
-  Settings.flag2.energy_resolution = ENERGY_RESOLUTION;
-}
-
-void SettingsDefaultSet_5_8_1()
-{
-//  Settings.flag.ws_clock_reverse = 0;
-  Settings.ws_width[WS_SECOND] = 1;
-  Settings.ws_color[WS_SECOND][WS_RED] = 255;
-  Settings.ws_color[WS_SECOND][WS_GREEN] = 0;
-  Settings.ws_color[WS_SECOND][WS_BLUE] = 255;
-  Settings.ws_width[WS_MINUTE] = 3;
-  Settings.ws_color[WS_MINUTE][WS_RED] = 0;
-  Settings.ws_color[WS_MINUTE][WS_GREEN] = 255;
-  Settings.ws_color[WS_MINUTE][WS_BLUE] = 0;
-  Settings.ws_width[WS_HOUR] = 5;
-  Settings.ws_color[WS_HOUR][WS_RED] = 255;
-  Settings.ws_color[WS_HOUR][WS_GREEN] = 0;
-  Settings.ws_color[WS_HOUR][WS_BLUE] = 0;
-}
-
-void SettingsDefaultSet_5_10_1()
-{
-  Settings.display_model = 0;
-  Settings.display_mode = 1;
-  Settings.display_refresh = 2;
-  Settings.display_rows = 2;
-  Settings.display_cols[0] = 16;
-  Settings.display_cols[1] = 8;
-//#if defined(USE_I2C) && defined(USE_DISPLAY)
-  Settings.display_address[0] = MTX_ADDRESS1;
-  Settings.display_address[1] = MTX_ADDRESS2;
-  Settings.display_address[2] = MTX_ADDRESS3;
-  Settings.display_address[3] = MTX_ADDRESS4;
-  Settings.display_address[4] = MTX_ADDRESS5;
-  Settings.display_address[5] = MTX_ADDRESS6;
-  Settings.display_address[6] = MTX_ADDRESS7;
-  Settings.display_address[7] = MTX_ADDRESS8;
-//#endif  // USE_DISPLAY
-  Settings.display_dimmer = 1;
-  Settings.display_size = 1;
-=======
 {
   strlcpy(Settings.state_text[0], MQTT_STATUS_OFF, sizeof(Settings.state_text[0]));
   strlcpy(Settings.state_text[1], MQTT_STATUS_ON, sizeof(Settings.state_text[1]));
@@ -930,7 +697,6 @@ void SettingsDefaultSet_5_13_1c()
 {
   SettingsResetStd();
   SettingsResetDst();
->>>>>>> upstream/development
 }
 
 /********************************************************************************************/
@@ -940,34 +706,6 @@ void SettingsDelta()
   if (Settings.version != VERSION) {      // Fix version dependent changes
     if (Settings.version < 0x03010200) {  // 3.1.2 - Add parameter
       Settings.poweronstate = APP_POWERON_STATE;
-<<<<<<< HEAD
-    }
-    if (Settings.version < 0x03010600) {  // 3.1.6 - Add parameter
-      Settings.blinktime = APP_BLINKTIME;
-      Settings.blinkcount = APP_BLINKCOUNT;
-    }
-    if (Settings.version < 0x03020400) {  // 3.2.4 - Add parameter
-      SettingsDefaultSet_3_2_4();
-    }
-    if (Settings.version < 0x03020500) {  // 3.2.5 - Add parameter
-      GetMqttClient(Settings.friendlyname[0], Settings.mqtt_client, sizeof(Settings.friendlyname[0]));
-      strlcpy(Settings.friendlyname[1], FRIENDLY_NAME"2", sizeof(Settings.friendlyname[1]));
-      strlcpy(Settings.friendlyname[2], FRIENDLY_NAME"3", sizeof(Settings.friendlyname[2]));
-      strlcpy(Settings.friendlyname[3], FRIENDLY_NAME"4", sizeof(Settings.friendlyname[3]));
-    }
-    if (Settings.version < 0x03020800) {  // 3.2.8 - Add parameter
-      strlcpy(Settings.switch_topic, Settings.button_topic, sizeof(Settings.switch_topic));
-    }
-    if (Settings.version < 0x03020C00) {  // 3.2.12 - Add parameter
-      Settings.sleep = APP_SLEEP;
-    }
-    if (Settings.version < 0x03090300) {  // 3.9.2d - Add parameter
-      SettingsDefaultSet_3_9_3();
-    }
-    if (Settings.version < 0x03091400) {
-      strlcpy(Settings.web_password, WEB_PASSWORD, sizeof(Settings.web_password));
-    }
-=======
     }
     if (Settings.version < 0x03010600) {  // 3.1.6 - Add parameter
       Settings.blinktime = APP_BLINKTIME;
@@ -994,7 +732,6 @@ void SettingsDelta()
     if (Settings.version < 0x03091400) {
       strlcpy(Settings.web_password, WEB_PASSWORD, sizeof(Settings.web_password));
     }
->>>>>>> upstream/development
     if (Settings.version < 0x03091500) {
       for (byte i = 0; i < MAX_SWITCHES; i++) {
         Settings.switchmode[i] = SWITCH_MODE;
@@ -1075,11 +812,7 @@ void SettingsDelta()
         }
       }
       if (!Settings.light_pixels && cfg_wsflg) {
-<<<<<<< HEAD
-        Settings.light_pixels = Settings.ws_pixels;
-=======
         Settings.light_pixels = WS2812_LEDS;
->>>>>>> upstream/development
         Settings.light_color[0] = Settings.ws_red;
         Settings.light_color[1] = Settings.ws_green;
         Settings.light_color[2] = Settings.ws_blue;
@@ -1093,24 +826,6 @@ void SettingsDelta()
       } else {
         Settings.light_pixels = WS2812_LEDS;
         Settings.light_width = 1;
-<<<<<<< HEAD
-      }
-    }
-    if (Settings.version < 0x0508000A) {
-      Settings.power = Settings.ex_power;
-      Settings.altitude = 0;
-    }
-    if (Settings.version < 0x0508000B) {
-      for (byte i = 0; i < MAX_GPIO_PIN; i++) {  // Move GPIO_LEDs
-        if ((Settings.my_gp.io[i] >= 25) && (Settings.my_gp.io[i] <= 32)) {  // Was GPIO_LED1
-          Settings.my_gp.io[i] += 23;  // Move GPIO_LED1
-        }
-      }
-      for (byte i = 0; i < MAX_PWMS; i++) {      // Move pwm_value and reset additional pulse_timerrs
-        Settings.pwm_value[i] = Settings.pulse_timer[4 +i];
-        Settings.pulse_timer[4 +i] = 0;
-      }
-=======
       }
     }
     if (Settings.version < 0x0508000A) {
@@ -1197,7 +912,6 @@ void SettingsDelta()
       }
       Settings.rule_enabled = Settings.flag.rules_enabled;
       Settings.rule_once = Settings.flag.rules_once;
->>>>>>> upstream/development
     }
     if (Settings.version < 0x0508000D) {
       Settings.pwm_frequency = PWM_FREQ;

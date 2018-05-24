@@ -7,13 +7,8 @@
 .piolibdeps
 .clang_complete
 .gcc-flags.json
-<<<<<<< HEAD
-.vscode
-sonoff/user_config_override.h
-=======
 sonoff/user_config_override.h
 build
 
 ## Visual Studio Code specific ######
 .vscode
->>>>>>> upstream/development

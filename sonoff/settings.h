@@ -20,11 +20,7 @@
 #ifndef _SETTINGS_H_
 #define _SETTINGS_H_
 
-<<<<<<< HEAD
-#define PARAM8_SIZE  23                    // Number of param bytes
-=======
 #define PARAM8_SIZE  18                    // Number of param bytes
->>>>>>> upstream/development
 
 typedef union {                            // Restricted by MISRA-C Rule 18.4 but so usefull...
   uint32_t data;                           // Allow bit manipulation using SetOption
@@ -51,21 +47,12 @@ typedef union {                            // Restricted by MISRA-C Rule 18.4 bu
     uint32_t hass_discovery : 1;           // bit 19 (v5.11.1a)
     uint32_t not_power_linked : 1;         // bit 20 (v5.11.1f)
     uint32_t no_power_on_check : 1;        // bit 21 (v5.11.1i)
-<<<<<<< HEAD
-    uint32_t spare22 : 1;
-    uint32_t spare23 : 1;
-    uint32_t spare24 : 1;
-    uint32_t spare25 : 1;
-    uint32_t spare26 : 1;
-    uint32_t spare27 : 1;
-=======
     uint32_t mqtt_serial : 1;              // bit 22 (v5.12.0f)
     uint32_t rules_enabled : 1;            // bit 23 (v5.12.0j) - free since v5.14.0b
     uint32_t rules_once : 1;               // bit 24 (v5.12.0k) - free since v5.14.0b
     uint32_t knx_enabled : 1;              // bit 25 (v5.12.0l) KNX
     uint32_t device_index_enable : 1;      // bit 26 (v5.13.1a)
     uint32_t knx_enable_enhancement : 1;   // bit 27 (v5.14.0a) KNX
->>>>>>> upstream/development
     uint32_t spare28 : 1;
     uint32_t spare29 : 1;
     uint32_t spare30 : 1;
@@ -101,8 +88,6 @@ typedef union {
     uint32_t temperature_resolution : 2;
   };
 } SysBitfield2;
-<<<<<<< HEAD
-=======
 
 typedef union {
   uint16_t data;
@@ -128,7 +113,6 @@ typedef union {
     uint32_t arm : 1;                      // bit 31
   };
 } Timer;
->>>>>>> upstream/development
 
 struct SYSCFG {
   unsigned long cfg_holder;                // 000
@@ -140,13 +124,7 @@ struct SYSCFG {
   int8_t        timezone;                  // 016
   char          ota_url[101];              // 017
   char          mqtt_prefix[3][11];        // 07C
-<<<<<<< HEAD
-
-  byte          free_09D[1];               // 09D
-
-=======
   uint8_t       baudrate;                  // 09D
->>>>>>> upstream/development
   byte          seriallog_level;           // 09E
   uint8_t       sta_config;                // 09F
   byte          sta_active;                // 0A0
@@ -161,14 +139,10 @@ struct SYSCFG {
   byte          syslog_level;              // 1AA
   uint8_t       webserver;                 // 1AB
   byte          weblog_level;              // 1AC
-<<<<<<< HEAD
-  char          mqtt_fingerprint[60];      // 1AD To be freed by binary fingerprint
-=======
   uint8_t       mqtt_fingerprint[2][20];   // 1AD
 
   byte          free_1D5[20];              // 1D5  Free since 5.12.0e
 
->>>>>>> upstream/development
   char          mqtt_host[33];             // 1E9
   uint16_t      mqtt_port;                 // 20A
   char          mqtt_client[33];           // 20C
@@ -177,10 +151,6 @@ struct SYSCFG {
   char          mqtt_topic[33];            // 26F
   char          button_topic[33];          // 290
   char          mqtt_grptopic[33];         // 2B1
-<<<<<<< HEAD
-
-=======
->>>>>>> upstream/development
   uint8_t       display_model;             // 2D2
   uint8_t       display_mode;              // 2D3
   uint8_t       display_refresh;           // 2D4
@@ -189,36 +159,15 @@ struct SYSCFG {
   uint8_t       display_address[8];        // 2D8
   uint8_t       display_dimmer;            // 2E0
   uint8_t       display_size;              // 2E1
-<<<<<<< HEAD
-  uint8_t       free_2E2[4];               // 2E2
-
-  uint16_t      pwm_frequency;             // 2E6
-  power_t       power;                     // 2E8
-  uint16_t      pwm_value[MAX_PWMS];       // 2EC
-
-=======
   TimeRule      tflag[2];                  // 2E2
   uint16_t      pwm_frequency;             // 2E6
   power_t       power;                     // 2E8
   uint16_t      pwm_value[MAX_PWMS];       // 2EC
->>>>>>> upstream/development
   int16_t       altitude;                  // 2F6 Add since 5.8.0i
   uint16_t      tele_period;               // 2F8
   uint8_t       ex_power;                  // 2FA Not used since 5.8.0j
   uint8_t       ledstate;                  // 2FB
   uint8_t       param[PARAM8_SIZE];        // 2FC was domoticz_in_topic until 5.1.6
-<<<<<<< HEAD
-  char          state_text[4][11];         // 313
-
-  byte          free_33F[1];               // 33F
-
-  uint16_t      domoticz_update_timer;     // 340
-  uint16_t      pwm_range;                 // 342
-
-  unsigned long domoticz_relay_idx[MAX_DOMOTICZ_IDX];  // 344
-  unsigned long domoticz_key_idx[MAX_DOMOTICZ_IDX];    // 354
-
-=======
   int16_t       toffset[2];                // 30E
 
   byte          free_312[1];               // 312
@@ -229,7 +178,6 @@ struct SYSCFG {
   uint16_t      pwm_range;                 // 342
   unsigned long domoticz_relay_idx[MAX_DOMOTICZ_IDX];  // 344
   unsigned long domoticz_key_idx[MAX_DOMOTICZ_IDX];    // 354
->>>>>>> upstream/development
   unsigned long energy_power_calibration;  // 364
   unsigned long energy_voltage_calibration;  // 368
   unsigned long energy_current_calibration;  // 36C
@@ -253,16 +201,9 @@ struct SYSCFG {
   uint16_t      mqtt_retry;                // 396
   uint8_t       poweronstate;              // 398
   uint8_t       last_module;               // 399
-<<<<<<< HEAD
-
-  uint16_t      blinktime;                 // 39A
-  uint16_t      blinkcount;                // 39C
-  uint16_t      ws_pixels;                 // 39E Not used since 5.8.0
-=======
   uint16_t      blinktime;                 // 39A
   uint16_t      blinkcount;                // 39C
   uint16_t      light_rotation;            // 39E
->>>>>>> upstream/development
   uint8_t       ws_red;                    // 3A0 Not used since 5.8.0
   uint8_t       ws_green;                  // 3A1 Not used since 5.8.0
   uint8_t       ws_blue;                   // 3A2 Not used since 5.8.0
@@ -278,59 +219,25 @@ struct SYSCFG {
   uint16_t      ws_wakeup;                 // 3AA Not used since 5.8.0
   char          friendlyname[MAX_FRIENDLYNAMES][33]; // 3AC
   char          switch_topic[33];          // 430
-<<<<<<< HEAD
-
-  byte          free_451[2];               // 451
-
-=======
   char          serial_delimiter;          // 451
   uint8_t       sbaudrate;                 // 452
->>>>>>> upstream/development
   uint8_t       sleep;                     // 453
   uint16_t      domoticz_switch_idx[MAX_DOMOTICZ_IDX];      // 454
   uint16_t      domoticz_sensor_idx[MAX_DOMOTICZ_SNS_IDX];  // 45C
   uint8_t       module;                    // 474
-<<<<<<< HEAD
-
   uint8_t       ws_color[4][3];            // 475
   uint8_t       ws_width[3];               // 481
-
-=======
-  uint8_t       ws_color[4][3];            // 475
-  uint8_t       ws_width[3];               // 481
->>>>>>> upstream/development
   myio          my_gp;                     // 484
   uint16_t      light_pixels;              // 496
   uint8_t       light_color[5];            // 498
   uint8_t       light_correction;          // 49D
   uint8_t       light_dimmer;              // 49E
-<<<<<<< HEAD
-
-  byte          free_49F[2];               // 49F
-
-=======
   uint8_t       rule_enabled;              // 49F
   uint8_t       rule_once;                 // 4A0
->>>>>>> upstream/development
   uint8_t       light_fade;                // 4A1
   uint8_t       light_speed;               // 4A2
   uint8_t       light_scheme;              // 4A3
   uint8_t       light_width;               // 4A4
-<<<<<<< HEAD
-
-  byte          free_4A5[1];               // 4A5
-
-  uint16_t      light_wakeup;              // 4A6
-
-  byte          free_4A8[1];               // 4A8
-
-  char          web_password[33];          // 4A9
-  uint8_t       switchmode[MAX_SWITCHES];  // 4CA
-  char          ntp_server[3][33];         // 4CE
-
-  byte          ina219_mode;               // 531
-
-=======
   byte          knx_GA_registered;         // 4A5  Number of Group Address to read
   uint16_t      light_wakeup;              // 4A6
   byte          knx_CB_registered;         // 4A8  Number of Group Address to write
@@ -338,7 +245,6 @@ struct SYSCFG {
   uint8_t       switchmode[MAX_SWITCHES];  // 4CA
   char          ntp_server[3][33];         // 4CE
   byte          ina219_mode;               // 531
->>>>>>> upstream/development
   uint16_t      pulse_timer[MAX_PULSETIMERS]; // 532
 
   byte          free_542[2];               // 542
@@ -346,20 +252,12 @@ struct SYSCFG {
   uint32_t      ip_address[4];             // 544
   unsigned long energy_kWhtotal;              // 554
   char          mqtt_fulltopic[100];       // 558
-<<<<<<< HEAD
-
   SysBitfield2  flag2;                     // 5BC Add flag2 since 5.9.2
-
-=======
-  SysBitfield2  flag2;                     // 5BC Add flag2 since 5.9.2
->>>>>>> upstream/development
   unsigned long pulse_counter[MAX_COUNTERS];  // 5C0
   uint16_t      pulse_counter_type;        // 5D0
   uint16_t      pulse_counter_debounce;    // 5D2
   uint8_t       rf_code[17][9];            // 5D4
 
-<<<<<<< HEAD
-=======
   byte          free_66d[3];               // 66D
 
   Timer         timer[MAX_TIMERS];         // 670
@@ -380,7 +278,6 @@ struct SYSCFG {
   char          rules[MAX_RULE_SETS][MAX_RULE_SIZE]; // 800 uses 512 bytes in v5.12.0m, 3 x 512 bytes in v5.14.0b
 
                                            // E00 - FFF free locations
->>>>>>> upstream/development
 } Settings;
 
 struct RTCMEM {
@@ -391,10 +288,7 @@ struct RTCMEM {
   unsigned long energy_kWhtotal;              // 008
   unsigned long pulse_counter[MAX_COUNTERS];  // 00C
   power_t       power;                     // 01C
-<<<<<<< HEAD
-=======
                                            // 020 next free location
->>>>>>> upstream/development
 } RtcSettings;
 
 struct TIME_T {
@@ -411,34 +305,14 @@ struct TIME_T {
   unsigned long valid;
 } RtcTime;
 
-<<<<<<< HEAD
-struct TimeChangeRule
-{
-  uint8_t       hemis;                     // 0-Northern, 1=Southern Hemisphere (=Opposite DST/STD)
-  uint8_t       week;                      // 1=First, 2=Second, 3=Third, 4=Fourth, or 0=Last week of the month
-  uint8_t       dow;                       // day of week, 1=Sun, 2=Mon, ... 7=Sat
-  uint8_t       month;                     // 1=Jan, 2=Feb, ... 12=Dec
-  uint8_t       hour;                      // 0-23
-  int           offset;                    // offset from UTC in minutes
-};
-
-TimeChangeRule DaylightSavingTime = { TIME_DST }; // Daylight Saving Time
-TimeChangeRule StandardTime = { TIME_STD }; // Standard Time
-
-=======
->>>>>>> upstream/development
 struct XDRVMAILBOX {
   uint16_t      valid;
   uint16_t      index;
   uint16_t      data_len;
-<<<<<<< HEAD
-  int16_t       payload;
-=======
   uint16_t      payload16;
   int16_t       payload;
   uint8_t       grpflg;
   uint8_t       notused;
->>>>>>> upstream/development
   char         *topic;
   char         *data;
 } XdrvMailbox;

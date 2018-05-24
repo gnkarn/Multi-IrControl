@@ -28,21 +28,15 @@
  * Use online command StateText to translate ON, OFF, HOLD and TOGGLE.
  * Use online command Prefix to translate cmnd, stat and tele.
  *
-<<<<<<< HEAD
-=======
  * Updated until v5.12.0l
->>>>>>> upstream/development
 \*********************************************************************/
 
 //#define LANGUAGE_MODULE_NAME         // Enable to display "Module Generic" (ie Spanish), Disable to display "Generic Module" (ie English)
 
-<<<<<<< HEAD
-=======
 #define LANGUAGE_LCID 1031
 // HTML (ISO 639-1) Language Code
 #define D_HTML_LANGUAGE "de"
 
->>>>>>> upstream/development
 // "2017-03-07T11:08:02" - ISO8601:2004
 #define D_YEAR_MONTH_SEPARATOR "."
 #define D_MONTH_DAY_SEPARATOR "."
@@ -50,13 +44,8 @@
 #define D_HOUR_MINUTE_SEPARATOR ":"
 #define D_MINUTE_SECOND_SEPARATOR ":"
 
-<<<<<<< HEAD
-#define D_DAY3LIST "SonMonDieMitDonFriSam"
-#define D_MONTH3LIST "JanFebMaeAprMaiJunJulAugSepOktNovDez"
-=======
 #define D_DAY3LIST "So Mo Di Mi Do Fr Sa "
 #define D_MONTH3LIST "JanFebMärAprMaiJunJulAugSepOktNovDez"
->>>>>>> upstream/development
 
 // Non JSON decimal separator
 #define D_DECIMAL_SEPARATOR "."
@@ -87,17 +76,11 @@
 #define D_DARKLIGHT "dunkel"
 #define D_DEBUG "debug"
 #define D_DISABLED "deaktiviert"
-<<<<<<< HEAD
-#define D_DNS_SERVER "DNS Server"
-#define D_DONE "erledigt"
-#define D_DST_TIME "DST"
-=======
 #define D_DISTANCE "Abstand"
 #define D_DNS_SERVER "DNS-Server"
 #define D_DONE "erledigt"
 #define D_DST_TIME "DST"
 #define D_ECO2 "eCO2"
->>>>>>> upstream/development
 #define D_EMULATION "Emulation"
 #define D_ENABLED "aktiviert"
 #define D_ERASE "löschen"
@@ -105,18 +88,11 @@
 #define D_FAHRENHEIT "Fahrenheit"
 #define D_FAILED "fehlgeschlagen"
 #define D_FALLBACK "Fallback"
-<<<<<<< HEAD
-#define D_FALLBACK_TOPIC "Fallback topic"
-#define D_FALSE "falsch"
-#define D_FILE "Datei"
-#define D_FREE_MEMORY "Freier Arbeitsspeicher"
-=======
 #define D_FALLBACK_TOPIC "Fallback-Topic"
 #define D_FALSE "falsch"
 #define D_FILE "Datei"
 #define D_FREE_MEMORY "Freier Arbeitsspeicher"
 #define D_FREQUENCY "Frequency"
->>>>>>> upstream/development
 #define D_GAS "Gas"
 #define D_GATEWAY "Gateway"
 #define D_GROUP "Gruppe"
@@ -127,14 +103,9 @@
 #define D_IMMEDIATE "direkt"      // Button immediate
 #define D_INDEX "Index"
 #define D_INFO "Info"
-<<<<<<< HEAD
-#define D_INITIALIZED "initialisiert"
-#define D_IP_ADDRESS "IP-Addresse"
-=======
 #define D_INFRARED "Infrarot"
 #define D_INITIALIZED "initialisiert"
 #define D_IP_ADDRESS "IP-Adresse"
->>>>>>> upstream/development
 #define D_LIGHT "Licht"
 #define D_LWT "LWT"
 #define D_MODULE "Modul"
@@ -151,16 +122,11 @@
 #define D_PORT "Port"
 #define D_POWER_FACTOR "Leistungsfaktor"
 #define D_POWERUSAGE "Leistung"
-<<<<<<< HEAD
-#define D_PRESSURE "Druck"
-#define D_PRESSUREATSEALEVEL "MeeresDruck"
-=======
 #define D_POWERUSAGE_ACTIVE "Active Power"
 #define D_POWERUSAGE_APPARENT "Apparent Power"
 #define D_POWERUSAGE_REACTIVE "Reactive Power"
 #define D_PRESSURE "Luftdruck"
 #define D_PRESSUREATSEALEVEL "Luftdruck auf Meereshöhe"
->>>>>>> upstream/development
 #define D_PROGRAM_FLASH_SIZE "Ges. Flash Speicher"
 #define D_PROGRAM_SIZE "Ben. Flash Speicher"
 #define D_PROJECT "Projekt"
@@ -170,10 +136,7 @@
 #define D_RESTART_REASON "Grund für Neustart"
 #define D_RESTORE "Wiederherstellung"
 #define D_RETAINED "beibehalten"
-<<<<<<< HEAD
-=======
 #define D_RULE "Regel"
->>>>>>> upstream/development
 #define D_SAVE "Speichern"
 #define D_SENSOR "Sensor"
 #define D_SSID "SSID"
@@ -181,51 +144,30 @@
 #define D_STD_TIME "STD"
 #define D_STOP "Stop"
 #define D_SUBNET_MASK "Subnetzmaske"
-<<<<<<< HEAD
-#define D_SUBSCRIBE_TO "subscribe to"
-#define D_SUCCESSFUL "erfolgreich"
-=======
 #define D_SUBSCRIBE_TO "abonniere"
 #define D_SUCCESSFUL "erfolgreich"
 #define D_SUNRISE "Sonnenaufgang"
 #define D_SUNSET "Sonnenuntergang"
->>>>>>> upstream/development
 #define D_TEMPERATURE "Temperatur"
 #define D_TO "zu"
 #define D_TOGGLE "An/Aus"
 #define D_TOPIC "topic"
 #define D_TRANSMIT "Übertragen"
 #define D_TRUE "wahr"
-<<<<<<< HEAD
-=======
 #define D_TVOC "TVOC"
->>>>>>> upstream/development
 #define D_UPGRADE "update"
 #define D_UPLOAD "Upload"
 #define D_UPTIME "Laufzeit"
 #define D_USER "Benutzer"
 #define D_UTC_TIME "UTC"
-<<<<<<< HEAD
-#define D_UV_LEVEL "UV Level"
-=======
 #define D_UV_INDEX "UV-Index"
 #define D_UV_LEVEL "UV-Level"
->>>>>>> upstream/development
 #define D_VERSION "Version"
 #define D_VOLTAGE "Spannung"
 #define D_WARMLIGHT "warm"
 #define D_WEB_SERVER "Web-Server"
 
 // sonoff.ino
-<<<<<<< HEAD
-#define D_WARNING_MINIMAL_VERSION "WARNING This version does not support persistent settings"
-#define D_LEVEL_10 "level 1-0"
-#define D_LEVEL_01 "level 0-1"
-#define D_SERIAL_LOGGING_DISABLED "Serielles logging deaktiviert"
-#define D_SYSLOG_LOGGING_REENABLED "Syslog logging reaktiviert"
-
-#define D_SET_BAUDRATE_TO "Baudrate eingestellt auf"
-=======
 #define D_WARNING_MINIMAL_VERSION "ACHTUNG: Diese Version unterstützt keine persistenten Einstellungen"
 #define D_LEVEL_10 "level 1-0"
 #define D_LEVEL_01 "level 0-1"
@@ -233,33 +175,10 @@
 #define D_SYSLOG_LOGGING_REENABLED "Syslog-Logging aktiviert"
 
 #define D_SET_BAUDRATE_TO "Setze Baudrate auf"
->>>>>>> upstream/development
 #define D_RECEIVED_TOPIC "empfangenes topic"
 #define D_DATA_SIZE "Datengröße"
 #define D_ANALOG_INPUT "Analog"
 
-<<<<<<< HEAD
-#define D_FINGERPRINT "TLS-Fingerabdruck wird verifiziert..."
-#define D_TLS_CONNECT_FAILED_TO "TLS-Verbindung fehlgeschlagen an"
-#define D_RETRY_IN "Wiederversuch in"
-#define D_VERIFIED "verifiziert"
-#define D_INSECURE "unsichere Verbindung aufgrund ungültigen Fingerabdrucks"
-#define D_CONNECT_FAILED_TO "Verbindung fehlgeschlagen aufgrund von"
-
-// support.ino
-#define D_OSWATCH "osWatch"
-#define D_BLOCKED_LOOP "Blocked Loop"
-#define D_WPS_FAILED_WITH_STATUS "WPS fehlgeschlagen mit Status"
-#define D_ACTIVE_FOR_3_MINUTES "aktiv für 3 Minuten"
-#define D_FAILED_TO_START "Starten fehlgeschlagen"
-#define D_PATCH_ISSUE_2186 "Patch-Problem 2186"
-#define D_CONNECTING_TO_AP "verbinden mit AP"
-#define D_IN_MODE "in Modus"
-#define D_CONNECT_FAILED_NO_IP_ADDRESS "Verbindung fehlgeschlagen da keine IP-Adresse zugeteilt wurde"
-#define D_CONNECT_FAILED_AP_NOT_REACHED "Verbindung fehlgeschlagen da AP nicht erreicht werden konnte"
-#define D_CONNECT_FAILED_WRONG_PASSWORD "Verbindung fehlgeschlagen mit AP weil das Passwort falsch ist"
-#define D_CONNECT_FAILED_AP_TIMEOUT "Verbindung fehlgeschlagen da der AP nicht antwortet (timeout)"
-=======
 // support.ino
 #define D_OSWATCH "osWatch"
 #define D_BLOCKED_LOOP "Schleife blockiert."
@@ -273,17 +192,12 @@
 #define D_CONNECT_FAILED_AP_NOT_REACHED "Verbindung fehlgeschlagen, da AP nicht erreicht werden konnte"
 #define D_CONNECT_FAILED_WRONG_PASSWORD "Verbindung fehlgeschlagen, da das Passwort falsch ist"
 #define D_CONNECT_FAILED_AP_TIMEOUT "Verbindung fehlgeschlagen, da der AP nicht antwortet (timeout)"
->>>>>>> upstream/development
 #define D_ATTEMPTING_CONNECTION "Verbindungsversuch..."
 #define D_CHECKING_CONNECTION "Prüfe Verbindung..."
 #define D_QUERY_DONE "Suchanfrage abgeschlossen. MQTT-Services gefunden"
 #define D_MQTT_SERVICE_FOUND "MQTT-Service gefunden bei"
 #define D_FOUND_AT "gefunden bei"
-<<<<<<< HEAD
-#define D_SYSLOG_HOST_NOT_FOUND "Syslog Host nicht gefunden"
-=======
 #define D_SYSLOG_HOST_NOT_FOUND "Syslog-Host nicht gefunden"
->>>>>>> upstream/development
 
 // settings.ino
 #define D_SAVED_TO_FLASH_AT "in Flash gespeichert am"
@@ -324,60 +238,28 @@
 #define D_RESTORE_CONFIGURATION "Konfiguration wiederherstellen"
 #define D_MAIN_MENU "Hauptmenü"
 
-<<<<<<< HEAD
-#define D_MODULE_PARAMETERS "Geräte Einstellungen"
-#define D_MODULE_TYPE "Geräte Typ"
-=======
 #define D_MODULE_PARAMETERS "Geräte-Einstellungen"
 #define D_MODULE_TYPE "Gerätetyp"
->>>>>>> upstream/development
 #define D_GPIO "GPIO"
 #define D_SERIAL_IN "serieller Eingang [serial in]"
 #define D_SERIAL_OUT "serieller Ausgang [serial out]"
 
-<<<<<<< HEAD
-#define D_WIFI_PARAMETERS "WLAN Einstellungen"
-#define D_SCAN_FOR_WIFI_NETWORKS "WLAN-Netzwerk suchen und auswählen"
-#define D_SCAN_DONE "Suche abgeschlossen"
-#define D_NO_NETWORKS_FOUND "Keine Netzwerke gefunden"
-#define D_REFRESH_TO_SCAN_AGAIN "Aktualisieren um erneut zu suchen"
-=======
 #define D_WIFI_PARAMETERS "WLAN-Einstellungen"
 #define D_SCAN_FOR_WIFI_NETWORKS "WLAN-Netzwerk suchen und auswählen"
 #define D_SCAN_DONE "Suche abgeschlossen"
 #define D_NO_NETWORKS_FOUND "Keine Netzwerke gefunden"
 #define D_REFRESH_TO_SCAN_AGAIN "Aktualisieren, um erneut zu suchen"
->>>>>>> upstream/development
 #define D_DUPLICATE_ACCESSPOINT "AccessPoint duplizieren"
 #define D_SKIPPING_LOW_QUALITY "überspringe wegen niedriger Qualität"
 #define D_RSSI "RSSI"
 #define D_WEP "WEP"
-<<<<<<< HEAD
-#define D_WPA_PSK "WPA PSK"
-#define D_WPA2_PSK "WPA2 PSK"
-=======
 #define D_WPA_PSK "WPA-PSK"
 #define D_WPA2_PSK "WPA2-PSK"
->>>>>>> upstream/development
 #define D_AP1_SSID "WLAN 1 - SSID"
 #define D_AP1_PASSWORD "WLAN 1 - Passwort"
 #define D_AP2_SSID "WLAN 2 - SSID"
 #define D_AP2_PASSWORD "WLAN 2 - Passwort"
 
-<<<<<<< HEAD
-#define D_MQTT_PARAMETERS "MQTT Einstellungen"
-#define D_CLIENT "client"
-#define D_FULL_TOPIC "full topic"
-
-#define D_LOGGING_PARAMETERS "Logging Einstellungen"
-#define D_SERIAL_LOG_LEVEL "Seriell Log level"
-#define D_WEB_LOG_LEVEL "Web Log level"
-#define D_SYS_LOG_LEVEL "Sys Log level"
-#define D_MORE_DEBUG "More debug"
-#define D_SYSLOG_HOST "Sys Log Host"
-#define D_SYSLOG_PORT "Sys Log Port"
-#define D_TELEMETRY_PERIOD "Telemetry period"
-=======
 #define D_MQTT_PARAMETERS "MQTT-Einstellungen"
 #define D_CLIENT "client"
 #define D_FULL_TOPIC "full topic"
@@ -390,7 +272,6 @@
 #define D_SYSLOG_HOST "Sys-Log Host"
 #define D_SYSLOG_PORT "Sys-Log Port"
 #define D_TELEMETRY_PERIOD "Telemetrieperiode"
->>>>>>> upstream/development
 
 #define D_OTHER_PARAMETERS "Sonstige Einstellungen"
 #define D_WEB_ADMIN_PASSWORD "Passwort für Web Oberfläche"
@@ -427,11 +308,7 @@
 #define D_UPGRADE_BY_WEBSERVER "Update über Web-Server"
 #define D_OTA_URL "OTA-URL"
 #define D_START_UPGRADE "Update starten"
-<<<<<<< HEAD
-#define D_UPGRADE_BY_FILE_UPLOAD "Update Datei hochladen"
-=======
 #define D_UPGRADE_BY_FILE_UPLOAD "Update-Datei hochladen"
->>>>>>> upstream/development
 #define D_UPLOAD_STARTED "Upload gestartet"
 #define D_UPGRADE_STARTED "Update gestartet"
 #define D_UPLOAD_DONE "Upload abgeschlossen"
@@ -448,9 +325,6 @@
 
 #define D_ENTER_COMMAND "Befehl eingeben"
 #define D_ENABLE_WEBLOG_FOR_RESPONSE "Aktivere Web Log Level 2 falls Reaktion erwartet"
-<<<<<<< HEAD
-#define D_NEED_USER_AND_PASSWORD "Benutzer benötigt=<Benutzername>&password=<Passwort>"
-=======
 #define D_NEED_USER_AND_PASSWORD "Benötige user=<Benutzername>&password=<Passwort>"
 
 // xdrv_00_mqtt.ino
@@ -460,7 +334,6 @@
 #define D_VERIFIED "verifiziert mit Fingerabdruck"
 #define D_INSECURE "unsichere Verbindung aufgrund ungültigen Fingerabdrucks"
 #define D_CONNECT_FAILED_TO "Verbindung fehlgeschlagen aufgrund von"
->>>>>>> upstream/development
 
 // xdrv_wemohue.ino
 #define D_MULTICAST_DISABLED "Multicast deaktiviert"
@@ -477,15 +350,6 @@
 
 #define D_HUE "Hue"
 #define D_HUE_BRIDGE_SETUP "Hue-Setup"
-<<<<<<< HEAD
-#define D_HUE_API_NOT_IMPLEMENTED "Hue API nicht implementiert"
-#define D_HUE_API "Hue API"
-#define D_HUE_POST_ARGS "Hue POST args"
-#define D_3_RESPONSE_PACKETS_SENT "3 Antwortpakete gesendet"
-
-// xdrv_05_domoticz.ino
-#define D_DOMOTICZ_PARAMETERS "Domoticz parameters"
-=======
 #define D_HUE_API_NOT_IMPLEMENTED "Hue-API nicht implementiert"
 #define D_HUE_API "Hue-API"
 #define D_HUE_POST_ARGS "Hue POST-Argumente"
@@ -493,7 +357,6 @@
 
 // xdrv_05_domoticz.ino
 #define D_DOMOTICZ_PARAMETERS "Domoticz-Parameter"
->>>>>>> upstream/development
 #define D_DOMOTICZ_IDX "Idx"
 #define D_DOMOTICZ_KEY_IDX "Key idx"
 #define D_DOMOTICZ_SWITCH_IDX "Switch idx"
@@ -503,13 +366,6 @@
   #define D_DOMOTICZ_TEMP_HUM_BARO "Temp,Hum,Baro"
   #define D_DOMOTICZ_POWER_ENERGY "Power,Energy"
   #define D_DOMOTICZ_ILLUMINANCE "Illuminance"
-<<<<<<< HEAD
-  #define D_DOMOTICZ_COUNT "Count"
-  #define D_DOMOTICZ_VOLTAGE "Voltage"
-  #define D_DOMOTICZ_CURRENT "Current"
-  #define D_DOMOTICZ_AIRQUALITY "AirQuality"
-#define D_DOMOTICZ_UPDATE_TIMER "Update timer"
-=======
   #define D_DOMOTICZ_COUNT "Count/PM1"
   #define D_DOMOTICZ_VOLTAGE "Voltage/PM2.5"
   #define D_DOMOTICZ_CURRENT "Current/PM10"
@@ -546,7 +402,6 @@
 #define D_SENT_TO "sent to"
 #define D_KNX_WARNING "The group address ( 0 / 0 / 0 ) is reserved and can not be used."
 #define D_KNX_ENHANCEMENT "Communication Enhancement"
->>>>>>> upstream/development
 
 // xdrv_03_energy.ino
 #define D_ENERGY_TODAY "Energie heute"
@@ -559,11 +414,7 @@
 #define D_SENSORS_FOUND "Sensor gefunden"
 
 // xsns_06_dht.ino
-<<<<<<< HEAD
-#define D_TIMEOUT_WAITING_FOR "Timeout wartet auf"
-=======
 #define D_TIMEOUT_WAITING_FOR "Timeout während Warten auf"
->>>>>>> upstream/development
 #define D_START_SIGNAL_LOW "Startausschlag niedrig"
 #define D_START_SIGNAL_HIGH "Startausschlag hoch"
 #define D_PULSE "pulse"
@@ -605,11 +456,6 @@
 #define D_SENSOR_SPI_DC   "SPI DC"
 #define D_SENSOR_BACKLIGHT "BkLight"
 #define D_SENSOR_PMS5003  "PMS5003"
-<<<<<<< HEAD
-
-// Units
-#define D_UNIT_AMPERE "A"
-=======
 #define D_SENSOR_SDS0X1   "SDS0X1"
 #define D_SENSOR_SBR_RX   "SerBr Rx"
 #define D_SENSOR_SBR_TX   "SerBr Tx"
@@ -624,7 +470,6 @@
 #define D_UNIT_AMPERE "A"
 #define D_UNIT_CENTIMETER "cm"
 #define D_UNIT_HERTZ "Hz"
->>>>>>> upstream/development
 #define D_UNIT_HOUR "h"
 #define D_UNIT_KILOOHM "kOhm"
 #define D_UNIT_KILOWATTHOUR "kWh"
@@ -635,20 +480,14 @@
 #define D_UNIT_MILLIAMPERE "mA"
 #define D_UNIT_MILLISECOND "ms"
 #define D_UNIT_MINUTE "min"
-<<<<<<< HEAD
-=======
 #define D_UNIT_PARTS_PER_BILLION "ppb"
->>>>>>> upstream/development
 #define D_UNIT_PARTS_PER_DECILITER "ppd"
 #define D_UNIT_PARTS_PER_MILLION "ppm"
 #define D_UNIT_PRESSURE "hPa"
 #define D_UNIT_SECOND "sek"
 #define D_UNIT_SECTORS "Sektoren"
-<<<<<<< HEAD
-=======
 #define D_UNIT_VA "VA"
 #define D_UNIT_VAR "VAr"
->>>>>>> upstream/development
 #define D_UNIT_VOLT "V"
 #define D_UNIT_WATT "W"
 #define D_UNIT_WATTHOUR "Wh"

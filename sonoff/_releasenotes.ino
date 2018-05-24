@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-/* 5.12.0 20180209
-=======
 /* 5.14.0b
  * Add two rule sets of 511 characters using commands rule1, rule2 and rule3
  * Add rule support for IrReceive and RfReceive (#2758)
@@ -147,7 +144,6 @@
  * Add GPIO_User to GPIO02 for all Sonoff T1 (#2524)
  *
  * 5.12.0 20180209
->>>>>>> upstream/development
  * Change library PubSubClient.h define MQTT_MAX_PACKET_SIZE from 512 to 1000 for Home Assistant  support
  * Change relation of define MESSZ being dependent on PubSubClient.h define MQTT_MAX_PACKET_SIZE
  * Change command color parameter input checks to less strict for Home Assistant support

@@ -281,14 +281,30 @@ boolean IrHvacBluesky(const char *HVAC_Mode, const char *HVAC_FanMode, boolean H
   if (!p) {
     return true;
   }
-  data[7] = (p - kHvacModeOptions) ^ 0x07; // HOT = 0x07, DRY = 0x??, COOL = 0x03, AUTO = 0x??, VENT:07
-
+  // **************************
+  // *     SET MODE BYTE      *
+  // **************************
+   // HeatT = 0x07, DRY = 0x??, COOL = 0x03, AUTO = 0x??, VENT:07
+   mode = (p - kHvacModeOptions + 1)
+   if ((5 == mode) || (6 == mode)) {
+     mode = 7;  // if nonexistent mode then VENT
+   }
+   data[7] = mode;
+   // **************************
+   // *     SET power BYTE      *
+   // **************************
   if (!HVAC_Power) {
     data[8] = (byte)0x20; // Turn OFF HVAC
   }
+    else {
+      data[8]= (byte)0x24; // Turn ON HVAC
+    }
 
 // const char kFanSpeedOptions[] = "A12345S";
 // const char kHvacModeOptions[] = "HDCAV"; // added VENT mode for Bluesky
+  // **************************
+  // * SET FAN-SWING BYTE     *
+  // **************************
   if (HVAC_FanMode == NULL) {
     p = (char *)kFanSpeedOptions; // default FAN_SPEED_AUTO
   }
@@ -298,13 +314,11 @@ boolean IrHvacBluesky(const char *HVAC_Mode, const char *HVAC_FanMode, boolean H
   if (!p) {
     return true;
   }
-  mode = (p - kHvacModeOptions + 1)
-  if ((5 == mode) || (6 == mode)) {
-    mode = 7;  // if nonexistent mode then VENT
-  }
-  data[7] = mode;
   data[5] = 0x28 ; // AUTO = 0x28, SPEED = 0x2A, 0x2B, 0x2D
   byte Temp;
+  // **************************
+  // *     SET TEMP  BYTE     *
+  // **************************
   if (HVAC_Temp > 31) {
     Temp = 31;
   }
@@ -314,7 +328,7 @@ boolean IrHvacBluesky(const char *HVAC_Mode, const char *HVAC_FanMode, boolean H
   else {
     Temp = HVAC_Temp;
   }
-  data[6] = (byte)(31 - Temp - 17);
+  data[6] = (byte)(31 - Temp);
 
   // data[HVAC_BLUESKY_DATALEN - 1] = 0;
   // for (int x = 0; x < HVAC_TOSHIBA_DATALEN - 1; x++) {

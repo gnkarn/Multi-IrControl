@@ -14,7 +14,7 @@
 // Suits Carrier/Surrey HVAC models:
 //   42QG5A55970 (remote)
 //   619EGX0090E0 / 619EGX0120E0 / 619EGX0180E0 / 619EGX0220E0 (indoor units)
-//   53NGK009/012 (inverter)
+//   53NGK009/012 (outdoor unit)
 
 // Constants
 // Ref:

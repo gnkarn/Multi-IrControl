@@ -232,6 +232,14 @@ enum decode_type_t {
 };
 
 // Message lengths & required repeat values
+#define HDR_MARK 3780U
+#define BIT_MARK 630U
+#define HDR_SPACE 1438U
+#define ONE_SPACE 1148U
+#define ZERO_SPACE 476U
+#define BLUESKY_BITS 112U
+#define HVAC_BLUESKY_DATALEN 14U
+
 #define AIWA_RC_T501_BITS           15U
 #define AIWA_RC_T501_MIN_REPEAT      1U
 #define COOLIX_BITS                 24U

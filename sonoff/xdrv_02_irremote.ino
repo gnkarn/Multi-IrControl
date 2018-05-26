@@ -21,6 +21,9 @@
 /*********************************************************************************************\
  * IR Remote send and receive using IRremoteESP8266 library
 \*********************************************************************************************/
+#include "IRrecv.h"
+#include "IRsend.h"
+#include "IRutils.h"
 
 #include <IRremoteESP8266.h>
 
@@ -47,6 +50,35 @@ IRMitsubishiAC *mitsubir = NULL;
 const char kFanSpeedOptions[] = "A12345S";
 const char kHvacModeOptions[] = "HDCAXYV"; // added VENT mode for Bluesky
 #endif
+
+//  bluesky definitions , should go on a separate file in the end
+#define HDR_MARK 3780U
+#define BIT_MARK 630U
+#define HDR_SPACE 1438U
+#define ONE_SPACE 1148U
+#define ZERO_SPACE 476U
+#define BLUESKY_BITS 112U
+#define HVAC_BLUESKY_DATALEN 14U
+
+// Alternative >64 bit Function
+void IRsend::send_bluesky(uint8_t data[], uint16_t nbytes) {
+  // nbytes should typically be XYZ_STATE_LENGTH
+  // data should typically be:
+  //    data = {0x74, 0x00, 0x00, 0x00, 0x00, 0x2D, 0x07, 0x07, 0x24, 0x00, 0x01, 0x26, 0xCB, 0x23};
+     //    uint8_t data[HVAC_BLUESKY_DATALEN] = {0xC4, 0xD3, 0x64, 0x80, 0x00, 0x24, 0x80, 0xA0, 0x14, 0x00, 0x00, 0x00, 0x00, 0xE6};
+  // data[] is assumed to be in MSB order for this code.
+  uint8_t repeat =0;                                                           //  fixed repeat for testing
+  for (uint16_t r = 0; r <= repeat; r++) {
+    sendGeneric(HDR_MARK, HDR_SPACE,
+                BIT_MARK, ONE_SPACE,
+                BIT_MARK, ZERO_SPACE,
+                BIT_MARK,
+                100000, // 100% made-up guess at the message gap.
+                data, nbytes,                                                   // 112 bits codded in 14 bytes
+                38000, // Complete guess of the modulation frequency.
+                true, 0, 50);
+              }
+}
 
 /*********************************************************************************************\
  * IR Send
@@ -285,7 +317,7 @@ boolean IrHvacBluesky(const char *HVAC_Mode, const char *HVAC_FanMode, boolean H
   // *     SET MODE BYTE      *
   // **************************
    // HeatT = 0x07, DRY = 0x??, COOL = 0x03, AUTO = 0x??, VENT:07
-   mode = (p - kHvacModeOptions + 1)
+   mode = (p - kHvacModeOptions + 1);
    if ((5 == mode) || (6 == mode)) {
      mode = 7;  // if nonexistent mode then VENT
    }
@@ -342,28 +374,29 @@ boolean IrHvacBluesky(const char *HVAC_Mode, const char *HVAC_FanMode, boolean H
   // rawdata[i++] = HVAC_TOSHIBA_HDR_MARK;
   // rawdata[i++] = HVAC_TOSHIBA_HDR_SPACE;
 
+  // checksum8 modulo 256  calc
+
+  int sum = 0;
+  for(int i = 0; i < (HVAC_BLUESKY_DATALEN-1); ++i) {
+     sum += data[i];
+  }
+  //modulo 256 sum
+  sum %= 256;
+  char ch = sum;
+
+  //twos complement
+  unsigned char twoscompl = ~ch + 1;
+  data[0] == twoscompl;
+
+  DPRINTLN(" data[0] "); DPRINTLN(data[0]); // debug
+
   //data
-    repeat =0;
-   for (uint16_t r = 0; r <= repeat; r++) {
-    // sendGeneric(HDR_MARK, HDR_SPACE,
-    //             BIT_MARK, ONE_SPACE,
-    //             BIT_MARK, ZERO_SPACE,
-    //             BIT_MARK
-    //             100000, // 100% made-up guess at the message gap.
-    //             data, nbytes,
-    //             38000, // Complete guess of the modulation frequency.
-    //             true, 0, 50);
-    send_bluesky(data, HVAC_BLUESKY_DATALEN);
+  irsend->send_bluesky(data, HVAC_BLUESKY_DATALEN);
+  uint8_t repeat =0;
+
+                                                             //  fixed repeat for testing
 
   //trailer
-  // rawdata[i++] = HVAC_TOSHIBA_RPT_MARK;
-  // rawdata[i++] = HVAC_TOSHIBA_RPT_SPACE;
-  //
-  // noInterrupts();
-  // irsend->sendRaw(rawdata, i, 38);
-  // irsend->sendRaw(rawdata, i, 38);
-  // interrupts();
-
   return false;
 }
 #endif // USE_IR_HVAC

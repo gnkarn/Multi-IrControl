@@ -45,7 +45,7 @@ const char kIrRemoteProtocols[] PROGMEM =
 IRMitsubishiAC *mitsubir = NULL;
 
 const char kFanSpeedOptions[] = "A12345S";
-const char kHvacModeOptions[] = "HDCA";
+const char kHvacModeOptions[] = "HDCAXYV"; // added VENT mode for Bluesky
 #endif
 
 /*********************************************************************************************\
@@ -258,7 +258,102 @@ boolean IrHvacMitsubishi(const char *HVAC_Mode, const char *HVAC_FanMode, boolea
 
   return false;
 }
+
+/// BLUESKY
+
+// IrHvacBluesky(HVAC_Mode(HDCAV), HVAC_FanMode(A12345S), HVAC_Power(), HVAC_Temp( 16-31));
+boolean IrHvacBluesky(const char *HVAC_Mode, const char *HVAC_FanMode, boolean HVAC_Power, int HVAC_Temp)
+{
+  uint16_t rawdata[2 + 2 * 8 * HVAC_BLUESKY_DATALEN + 2];
+  // byte data[HVAC_BLUESKY_DATALEN] =  {0xC4, 0xD3, 0x64, 0x80, 0x00, 0x24, 0xE0, 0xE0, 0xB4, 0x00, 0x00, 0x00, 0x00, 0x2E}; // MSB first
+  byte data[HVAC_BLUESKY_DATALEN] =  {0x74, 0x00, 0x00, 0x00, 0x00, 0x2D, 0x07, 0x07, 0x24, 0x00, 0x01, 0x26, 0xCB, 0x23};
+
+  //  LSB FIRST : 0x74, 0x00, 0x00, 0x00, 0x00, 0x2D, 0x07, 0x07, 0x24, 0x00, 0x01, 0x26, 0xCB, 0x23
+  char *p;
+  uint8_t mode;
+
+  if (HVAC_Mode == NULL) {
+    p = (char *)kHvacModeOptions; // default HVAC_VENT
+  }
+  else {
+    p = strchr(kHvacModeOptions, toupper(HVAC_Mode[0]));
+  }
+  if (!p) {
+    return true;
+  }
+  data[7] = (p - kHvacModeOptions) ^ 0x07; // HOT = 0x07, DRY = 0x??, COOL = 0x03, AUTO = 0x??, VENT:07
+
+  if (!HVAC_Power) {
+    data[8] = (byte)0x20; // Turn OFF HVAC
+  }
+
+// const char kFanSpeedOptions[] = "A12345S";
+// const char kHvacModeOptions[] = "HDCAV"; // added VENT mode for Bluesky
+  if (HVAC_FanMode == NULL) {
+    p = (char *)kFanSpeedOptions; // default FAN_SPEED_AUTO
+  }
+  else {
+    p = strchr(kFanSpeedOptions, toupper(HVAC_FanMode[0]));
+  }
+  if (!p) {
+    return true;
+  }
+  mode = (p - kHvacModeOptions + 1)
+  if ((5 == mode) || (6 == mode)) {
+    mode = 7;  // if nonexistent mode then VENT
+  }
+  data[7] = mode;
+  data[5] = 0x28 ; // AUTO = 0x28, SPEED = 0x2A, 0x2B, 0x2D
+  byte Temp;
+  if (HVAC_Temp > 31) {
+    Temp = 31;
+  }
+  else if (HVAC_Temp < 16) {
+    Temp = 16;
+  }
+  else {
+    Temp = HVAC_Temp;
+  }
+  data[6] = (byte)(31 - Temp - 17);
+
+  // data[HVAC_BLUESKY_DATALEN - 1] = 0;
+  // for (int x = 0; x < HVAC_TOSHIBA_DATALEN - 1; x++) {
+  //   data[HVAC_TOSHIBA_DATALEN - 1] = (byte)data[x] ^ data[HVAC_TOSHIBA_DATALEN - 1]; // CRC is a simple bits addition
+  // }
+
+  // int i = 0;
+  // byte mask = 1;
+
+  //header
+  // rawdata[i++] = HVAC_TOSHIBA_HDR_MARK;
+  // rawdata[i++] = HVAC_TOSHIBA_HDR_SPACE;
+
+  //data
+    repeat =0;
+   for (uint16_t r = 0; r <= repeat; r++) {
+    // sendGeneric(HDR_MARK, HDR_SPACE,
+    //             BIT_MARK, ONE_SPACE,
+    //             BIT_MARK, ZERO_SPACE,
+    //             BIT_MARK
+    //             100000, // 100% made-up guess at the message gap.
+    //             data, nbytes,
+    //             38000, // Complete guess of the modulation frequency.
+    //             true, 0, 50);
+    send_bluesky(data, HVAC_BLUESKY_DATALEN);
+
+  //trailer
+  // rawdata[i++] = HVAC_TOSHIBA_RPT_MARK;
+  // rawdata[i++] = HVAC_TOSHIBA_RPT_SPACE;
+  //
+  // noInterrupts();
+  // irsend->sendRaw(rawdata, i, 38);
+  // irsend->sendRaw(rawdata, i, 38);
+  // interrupts();
+
+  return false;
+}
 #endif // USE_IR_HVAC
+
 
 /*********************************************************************************************\
  * Commands
@@ -325,8 +420,8 @@ boolean IrSendCommand()
               irsend->sendPanasonic(bits, data); break;
             case GICABLE:
                 irsend->sendGICable(data, bits); break;
-            case BLUESKY:
-                    irsend->send_bluesky(  *array_data, bits); break;
+            // case BLUESKY:
+            //         irsend->send_bluesky(  *array_data, bits); break;
             default:
               snprintf_P(mqtt_data, sizeof(mqtt_data), PSTR("{\"" D_CMND_IRSEND "\":\"" D_JSON_PROTOCOL_NOT_SUPPORTED "\"}"));
           }
@@ -374,6 +469,9 @@ boolean IrSendCommand()
         }
         else if (!strcasecmp_P(HVAC_Vendor, PSTR("MITSUBISHI"))) {
           error = IrHvacMitsubishi(HVAC_Mode, HVAC_FanMode, HVAC_Power, HVAC_Temp);
+        }
+        else if (!strcasecmp_P(HVAC_Vendor, PSTR("BLUESKY"))) {
+          error = IrHvacBluesky(HVAC_Mode, HVAC_FanMode, HVAC_Power, HVAC_Temp);
         }
         else {
           error = true;

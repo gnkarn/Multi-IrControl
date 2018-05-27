@@ -47,7 +47,7 @@ const char kIrRemoteProtocols[] PROGMEM =
 
 IRMitsubishiAC *mitsubir = NULL;
 
-const char kFanSpeedOptions[] = "A12345S";
+const char kFanSpeedOptions[] = "A123456S";
 const char kHvacModeOptions[] = "HDCAXYV"; // added VENT mode for Bluesky
 #endif
 
@@ -291,15 +291,18 @@ boolean IrHvacMitsubishi(const char *HVAC_Mode, const char *HVAC_FanMode, boolea
   return false;
 }
 
-/// BLUESKY
+// **************************
+// *       BLUESKY          *
+// **************************
 
 // IrHvacBluesky(HVAC_Mode(HDCAV), HVAC_FanMode(A12345S), HVAC_Power(), HVAC_Temp( 16-31));
+// mqtt command format:  cmnd/Multi-IR/irhvac  {"VENDOR": "BLUESKY","POWER":1,"MODE":"V","FANSPEED":2,"TEMP":25}
+
 boolean IrHvacBluesky(const char *HVAC_Mode, const char *HVAC_FanMode, boolean HVAC_Power, int HVAC_Temp)
 {
   uint16_t rawdata[2 + 2 * 8 * HVAC_BLUESKY_DATALEN + 2];
   // byte data[HVAC_BLUESKY_DATALEN] =  {0xC4, 0xD3, 0x64, 0x80, 0x00, 0x24, 0xE0, 0xE0, 0xB4, 0x00, 0x00, 0x00, 0x00, 0x2E}; // MSB first
-  byte data[HVAC_BLUESKY_DATALEN] =  {0x74, 0x00, 0x00, 0x00, 0x00, 0x2D, 0x07, 0x07, 0x24, 0x00, 0x01, 0x26, 0xCB, 0x23};
-
+  byte data[HVAC_BLUESKY_DATALEN] =  { 0x23, 0xCB, 0x26, 0x01, 0x00, 0x24, 0x07, 0x07, 0x2D, 0x00, 0x00, 0x00, 0x00,0x74};
   //  LSB FIRST : 0x74, 0x00, 0x00, 0x00, 0x00, 0x2D, 0x07, 0x07, 0x24, 0x00, 0x01, 0x26, 0xCB, 0x23
   char *p;
   uint8_t mode;
@@ -314,28 +317,32 @@ boolean IrHvacBluesky(const char *HVAC_Mode, const char *HVAC_FanMode, boolean H
     return true;
   }
   // **************************
-  // *     SET MODE BYTE      *
+  // *     SET MODE BYTE 6     *
   // **************************
-   // HeatT = 0x07, DRY = 0x??, COOL = 0x03, AUTO = 0x??, VENT:07
+   // HeatT = 0x07, DRY = 0x??, COOL = 0x03, AUTO = 0x08, VENT:0x07
    mode = (p - kHvacModeOptions + 1);
    if ((5 == mode) || (6 == mode)) {
      mode = 7;  // if nonexistent mode then VENT
    }
-   data[7] = mode;
+   if (mode == 4 ){mode = 0x08 ;} // for bluesky the auto mode code is 8 not 4
+   data[6] = mode;
    // **************************
-   // *     SET power BYTE      *
+   // *     SET power BYTE 5    *
    // **************************
+   // timer on is 0x2C ; not implemented
   if (!HVAC_Power) {
-    data[8] = (byte)0x20; // Turn OFF HVAC
+    data[5] = (byte)0x20; // Turn OFF HVAC
   }
     else {
-      data[8]= (byte)0x24; // Turn ON HVAC
+      data[5]= (byte)0x24; // Turn ON HVAC
     }
 
-// const char kFanSpeedOptions[] = "A12345S";
-// const char kHvacModeOptions[] = "HDCAV"; // added VENT mode for Bluesky
+    //const char kFanSpeedOptions[] = "A1234XS";// 5 NOT USED( add 1 to decode)
+    //const char kHvacModeOptions[] = "HDCAXYV"; // added VENT mode for Bluesky
+    // fanmode = swing << 3 + fan = 0x38 (swing auto) + fan (0 = auto, 2,3,5)
+    // code: 00sssvvv
   // **************************
-  // * SET FAN-SWING BYTE     *
+  // * SET FAN-SWING BYTE 8   *
   // **************************
   if (HVAC_FanMode == NULL) {
     p = (char *)kFanSpeedOptions; // default FAN_SPEED_AUTO
@@ -346,10 +353,11 @@ boolean IrHvacBluesky(const char *HVAC_Mode, const char *HVAC_FanMode, boolean H
   if (!p) {
     return true;
   }
-  data[5] = 0x28 ; // AUTO = 0x28, SPEED = 0x2A, 0x2B, 0x2D
+  mode = (p - kFanSpeedOptions );
+  data[8] = 0x38 + mode;
   byte Temp;
   // **************************
-  // *     SET TEMP  BYTE     *
+  // *     SET TEMP  BYTE  7  *
   // **************************
   if (HVAC_Temp > 31) {
     Temp = 31;
@@ -374,8 +382,9 @@ boolean IrHvacBluesky(const char *HVAC_Mode, const char *HVAC_FanMode, boolean H
   // rawdata[i++] = HVAC_TOSHIBA_HDR_MARK;
   // rawdata[i++] = HVAC_TOSHIBA_HDR_SPACE;
 
-  // checksum8 modulo 256  calc
-
+  // ****************************************
+  // * checksum8 modulo 256  calc BYTE 13   *
+  // ****************************************
   int sum = 0;
   for(int i = 0; i < (HVAC_BLUESKY_DATALEN-1); ++i) {
      sum += data[i];
@@ -386,9 +395,13 @@ boolean IrHvacBluesky(const char *HVAC_Mode, const char *HVAC_FanMode, boolean H
 
   //twos complement
   unsigned char twoscompl = ~ch + 1;
-  data[0] == twoscompl;
+  data[13] == twoscompl;
 
-  DPRINTLN(" data[0] "); DPRINTLN(data[0]); // debug
+  DPRINTLN(" data[] ");
+  for(int i = 0; i < (HVAC_BLUESKY_DATALEN); ++i) {
+     DPRINT(String(data[i], HEX));DPRINT(", ");  // debug
+  }
+
 
   //data
   irsend->send_bluesky(data, HVAC_BLUESKY_DATALEN);

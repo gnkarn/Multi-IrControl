@@ -303,6 +303,7 @@ boolean IrHvacBluesky(const char *HVAC_Mode, const char *HVAC_FanMode, boolean H
   uint16_t rawdata[2 + 2 * 8 * HVAC_BLUESKY_DATALEN + 2];
   // byte data[HVAC_BLUESKY_DATALEN] =  {0xC4, 0xD3, 0x64, 0x80, 0x00, 0x24, 0xE0, 0xE0, 0xB4, 0x00, 0x00, 0x00, 0x00, 0x2E}; // MSB first
   byte data[HVAC_BLUESKY_DATALEN] =  { 0x23, 0xCB, 0x26, 0x01, 0x00, 0x24, 0x07, 0x07, 0x2D, 0x00, 0x00, 0x00, 0x00,0x74};
+//  byte data[HVAC_BLUESKY_DATALEN] =  {  0x74, 0x00, 0x00, 0x00, 0x00, 0x2D, 0x07, 0x07, 0x24, 0x00, 0x01, 0x26, 0xCB, 0x23};
   //  LSB FIRST : 0x74, 0x00, 0x00, 0x00, 0x00, 0x2D, 0x07, 0x07, 0x24, 0x00, 0x01, 0x26, 0xCB, 0x23
   char *p;
   uint8_t mode;
@@ -324,7 +325,7 @@ boolean IrHvacBluesky(const char *HVAC_Mode, const char *HVAC_FanMode, boolean H
    if ((5 == mode) || (6 == mode)) {
      mode = 7;  // if nonexistent mode then VENT
    }
-   if (mode == 4 ){mode = 0x08 ;} // for bluesky the auto mode code is 8 not 4
+   if (mode == 4 ){mode = (byte)0x08 ;} // for bluesky the auto mode code is 8 not 4
    data[6] = mode;
    // **************************
    // *     SET power BYTE 5    *
@@ -354,7 +355,7 @@ boolean IrHvacBluesky(const char *HVAC_Mode, const char *HVAC_FanMode, boolean H
     return true;
   }
   mode = (p - kFanSpeedOptions );
-  data[8] = 0x38 + mode;
+  data[8] = (byte)0x38 + mode;
   byte Temp;
   // **************************
   // *     SET TEMP  BYTE  7  *
@@ -368,19 +369,7 @@ boolean IrHvacBluesky(const char *HVAC_Mode, const char *HVAC_FanMode, boolean H
   else {
     Temp = HVAC_Temp;
   }
-  data[6] = (byte)(31 - Temp);
-
-  // data[HVAC_BLUESKY_DATALEN - 1] = 0;
-  // for (int x = 0; x < HVAC_TOSHIBA_DATALEN - 1; x++) {
-  //   data[HVAC_TOSHIBA_DATALEN - 1] = (byte)data[x] ^ data[HVAC_TOSHIBA_DATALEN - 1]; // CRC is a simple bits addition
-  // }
-
-  // int i = 0;
-  // byte mask = 1;
-
-  //header
-  // rawdata[i++] = HVAC_TOSHIBA_HDR_MARK;
-  // rawdata[i++] = HVAC_TOSHIBA_HDR_SPACE;
+  data[7] = (byte)(31 - Temp);
 
   // ****************************************
   // * checksum8 modulo 256  calc BYTE 13   *
@@ -395,19 +384,31 @@ boolean IrHvacBluesky(const char *HVAC_Mode, const char *HVAC_FanMode, boolean H
 
   //twos complement
   unsigned char twoscompl = ~ch + 1;
-  data[13] == twoscompl;
+  //data[13] = twoscompl;
+  data[13] = ch;
 
   DPRINTLN(" data[] ");
   for(int i = 0; i < (HVAC_BLUESKY_DATALEN); ++i) {
      DPRINT(String(data[i], HEX));DPRINT(", ");  // debug
   }
-
+  DPRINTLN("");
 
   //data
-  irsend->send_bluesky(data, HVAC_BLUESKY_DATALEN);
-  uint8_t repeat =0;
+  uint8_t repeat =0;                        //  fixed repeat for testing
+  // invierte el vector para probar
+  // for(int i = 0; i < (HVAC_BLUESKY_DATALEN/2); ++i) {
+  //   uint8_t aux =  data[i];
+  //   data[i]= data[HVAC_BLUESKY_DATALEN-i-1];
+  //   data[HVAC_BLUESKY_DATALEN-i-1] = aux;
+  // }
+  //
+  // DPRINTLN(" data[] ");
+  // for(int i = 0; i < (HVAC_BLUESKY_DATALEN); ++i) {
+  //    DPRINT(String(data[i], HEX));DPRINT(", ");  // debug
+  // }
 
-                                                             //  fixed repeat for testing
+  irsend->send_bluesky(data, HVAC_BLUESKY_DATALEN);
+
 
   //trailer
   return false;

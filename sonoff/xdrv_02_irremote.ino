@@ -67,6 +67,10 @@ void IRsend::send_bluesky(uint8_t data[], uint16_t nbytes) {
   //    data = {0x74, 0x00, 0x00, 0x00, 0x00, 0x2D, 0x07, 0x07, 0x24, 0x00, 0x01, 0x26, 0xCB, 0x23};
      //    uint8_t data[HVAC_BLUESKY_DATALEN] = {0xC4, 0xD3, 0x64, 0x80, 0x00, 0x24, 0x80, 0xA0, 0x14, 0x00, 0x00, 0x00, 0x00, 0xE6};
   // data[] is assumed to be in MSB order for this code.
+  //sendGeneric(headermark, headerspace, onemark, onespace, zeromark, zerospace,
+    //          footermark, gap, 0U, data, nbits, frequency, MSBfirst, repeat,
+    //          dutycycle);
+
   uint8_t repeat =0;                                                           //  fixed repeat for testing
   for (uint16_t r = 0; r <= repeat; r++) {
     sendGeneric(HDR_MARK, HDR_SPACE,
@@ -75,8 +79,8 @@ void IRsend::send_bluesky(uint8_t data[], uint16_t nbytes) {
                 BIT_MARK,
                 100000, // 100% made-up guess at the message gap.
                 data, nbytes,                                                   // 112 bits codded in 14 bytes
-                38000, // Complete guess of the modulation frequency.
-                true, 0, 50);
+                40923, // with 38 , it is 2 us short , so i use 38 x 28/26
+                false, 0, 50);
               }
 }
 

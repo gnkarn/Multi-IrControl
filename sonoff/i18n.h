@@ -268,6 +268,7 @@
   #define D_JSON_IRHVAC_MODE "MODE"
   #define D_JSON_IRHVAC_FANSPEED "FANSPEED"
   #define D_JSON_IRHVAC_TEMP "TEMP"
+  #define D_JSON_IRHVAC_SWINGMODE "SWING" // FOR BLUESKY HVAC
 #define D_JSON_IRRECEIVED "IrReceived"
 
 // Commands xdrv_03_energy.ino

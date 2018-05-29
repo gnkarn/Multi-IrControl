@@ -47,7 +47,8 @@ const char kIrRemoteProtocols[] PROGMEM =
 
 IRMitsubishiAC *mitsubir = NULL;
 
-const char kFanSpeedOptions[] = "A123456S";
+const char kFanSpeedOptions[] = "A12345"; // on bluesky is Auto, sleep,2,3,x,5
+const char kFanSwingOptions[] = "12345xS";// for bluesky 1: top 5: down 7:swing
 const char kHvacModeOptions[] = "HDCAXYV"; // added VENT mode for Bluesky
 #endif
 
@@ -79,7 +80,7 @@ void IRsend::send_bluesky(uint8_t data[], uint16_t nbytes) {
                 BIT_MARK,
                 100000, // 100% made-up guess at the message gap.
                 data, nbytes,                                                   // 112 bits codded in 14 bytes
-                40923, // with 38 , it is 2 us short , so i use 38 x 28/26
+                38000, // 40923 with 38 , it is 2 us short , so i use 38 x 28/26
                 false, 0, 50);
               }
 }
@@ -96,7 +97,7 @@ void IrSendInit(void)
 {
   irsend = new IRsend(pin[GPIO_IRSEND]); // an IR led is at GPIO_IRSEND
   irsend->begin();
-
+  irsend->calibrate(38000); // added to fix freq difference on BLUESKY
 #ifdef USE_IR_HVAC
   mitsubir = new IRMitsubishiAC(pin[GPIO_IRSEND]);
 #endif //USE_IR_HVAC
@@ -299,16 +300,14 @@ boolean IrHvacMitsubishi(const char *HVAC_Mode, const char *HVAC_FanMode, boolea
 // *       BLUESKY          *
 // **************************
 
-// IrHvacBluesky(HVAC_Mode(HDCAV), HVAC_FanMode(A12345S), HVAC_Power(), HVAC_Temp( 16-31));
-// mqtt command format:  cmnd/Multi-IR/irhvac  {"VENDOR": "BLUESKY","POWER":1,"MODE":"V","FANSPEED":2,"TEMP":25}
+// IrHvacBluesky(HVAC_Mode(HDCAV), HVAC_FanMode(A12345), HVAC_Power(), HVAC_Temp( 16-31));
+// mqtt command format:  cmnd/Multi-IR/irhvac  {"VENDOR": "BLUESKY","POWER":1,"MODE":"V","FANSPEED":2,"SWING": 1,"TEMP":25}
 
-boolean IrHvacBluesky(const char *HVAC_Mode, const char *HVAC_FanMode, boolean HVAC_Power, int HVAC_Temp)
+boolean IrHvacBluesky(const char *HVAC_Mode, const char *HVAC_FanMode,const char *HVAC_SwingMode, boolean HVAC_Power, int HVAC_Temp)
 {
   uint16_t rawdata[2 + 2 * 8 * HVAC_BLUESKY_DATALEN + 2];
-  // byte data[HVAC_BLUESKY_DATALEN] =  {0xC4, 0xD3, 0x64, 0x80, 0x00, 0x24, 0xE0, 0xE0, 0xB4, 0x00, 0x00, 0x00, 0x00, 0x2E}; // MSB first
   byte data[HVAC_BLUESKY_DATALEN] =  { 0x23, 0xCB, 0x26, 0x01, 0x00, 0x24, 0x07, 0x07, 0x2D, 0x00, 0x00, 0x00, 0x00,0x74};
-//  byte data[HVAC_BLUESKY_DATALEN] =  {  0x74, 0x00, 0x00, 0x00, 0x00, 0x2D, 0x07, 0x07, 0x24, 0x00, 0x01, 0x26, 0xCB, 0x23};
-  //  LSB FIRST : 0x74, 0x00, 0x00, 0x00, 0x00, 0x2D, 0x07, 0x07, 0x24, 0x00, 0x01, 0x26, 0xCB, 0x23
+
   char *p;
   uint8_t mode;
 
@@ -342,7 +341,7 @@ boolean IrHvacBluesky(const char *HVAC_Mode, const char *HVAC_FanMode, boolean H
       data[5]= (byte)0x24; // Turn ON HVAC
     }
 
-    //const char kFanSpeedOptions[] = "A1234XS";// 5 NOT USED( add 1 to decode)
+    //const char kFanSpeedOptions[] = "A12345";// 5 NOT USED( add 1 to decode)
     //const char kHvacModeOptions[] = "HDCAXYV"; // added VENT mode for Bluesky
     // fanmode = swing << 3 + fan = 0x38 (swing auto) + fan (0 = auto, 2,3,5)
     // code: 00sssvvv
@@ -359,11 +358,24 @@ boolean IrHvacBluesky(const char *HVAC_Mode, const char *HVAC_FanMode, boolean H
     return true;
   }
   mode = (p - kFanSpeedOptions );
-  data[8] = (byte)0x38 + mode;
-  byte Temp;
+  DPRINTLN(mode);
+
+  // kFanSwingOptions[] = "12345xS";// for bluesky 1: top 5: down 7:swing
+  if (HVAC_SwingMode == NULL) {
+    p = (char *)kFanSwingOptions; // default FAN_SPEED_AUTO
+  }
+  else {
+    p = strchr(kFanSwingOptions, toupper(HVAC_SwingMode[0]));
+  }
+  if (!p) {
+    return true;
+  }
+  data[8] = (byte)((p - kFanSwingOptions+1) << 3) + mode;
+
   // **************************
   // *     SET TEMP  BYTE  7  *
   // **************************
+  byte Temp;
   if (HVAC_Temp > 31) {
     Temp = 31;
   }
@@ -508,6 +520,7 @@ boolean IrSendCommand()
     const char *HVAC_Mode;
     const char *HVAC_FanMode;
     const char *HVAC_Vendor;
+    const char *HVAC_SwingMode;
     int HVAC_Temp = 21;
     boolean HVAC_Power = true;
 
@@ -524,6 +537,7 @@ boolean IrSendCommand()
         HVAC_Mode = root[D_JSON_IRHVAC_MODE];
         HVAC_FanMode = root[D_JSON_IRHVAC_FANSPEED];
         HVAC_Temp = root[D_JSON_IRHVAC_TEMP];
+        HVAC_SwingMode = root[D_JSON_IRHVAC_SWINGMODE];
 
         //        snprintf_P(log_data, sizeof(log_data), PSTR("IRHVAC: Received Vendor %s, Power %d, Mode %s, FanSpeed %s, Temp %d"),
         //          HVAC_Vendor, HVAC_Power, HVAC_Mode, HVAC_FanMode, HVAC_Temp);
@@ -536,7 +550,7 @@ boolean IrSendCommand()
           error = IrHvacMitsubishi(HVAC_Mode, HVAC_FanMode, HVAC_Power, HVAC_Temp);
         }
         else if (!strcasecmp_P(HVAC_Vendor, PSTR("BLUESKY"))) {
-          error = IrHvacBluesky(HVAC_Mode, HVAC_FanMode, HVAC_Power, HVAC_Temp);
+          error = IrHvacBluesky(HVAC_Mode, HVAC_FanMode,  HVAC_SwingMode,HVAC_Power, HVAC_Temp);
         }
         else {
           error = true;
